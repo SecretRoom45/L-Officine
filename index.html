@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 L’Officine – Le Dernier Round</title>
+
+  <style>
+    :root{
+      --bg:#050506;
+      --panel:rgba(20,20,24,0.75);
+      --panel2:rgba(30,30,36,0.75);
+      --text:rgba(255,255,255,0.95);
+      --muted:rgba(255,255,255,0.7);
+      --accent:#ff3366;
+      --accent2:#ff6b8f;
+      --border:rgba(255,255,255,0.08);
+      --shadow:0 18px 60px rgba(0,0,0,0.65);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 50% 15%, rgba(255,51,102,0.22), transparent 60%),
+        radial-gradient(700px 400px at 20% 80%, rgba(255,107,143,0.14), transparent 60%),
+        linear-gradient(180deg,#050506 0%,#08080c 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px 16px;
+    }
+
+    .app{
+      width:min(820px,100%);
+      display:grid;
+      gap:20px;
+    }
+
+    header{
+      text-align:center;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(22px,3.5vw,34px);
+      font-weight:800;
+    }
+
+    .subtitle{
+      margin-top:8px;
+      font-size:15px;
+      color:var(--muted);
+    }
+
+    .panel{
+      background:linear-gradient(180deg,var(--panel),var(--panel2));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      display:grid;
+      gap:18px;
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .badge{
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(255,51,102,0.12);
+      border:1px solid rgba(255,51,102,0.3);
+      font-weight:700;
+      color:#fff;
+    }
+
+    .card{
+      min-height:160px;
+      border-radius:16px;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:24px;
+      font-size:clamp(18px,2.6vw,26px);
+      font-weight:650;
+      line-height:1.35;
+      animation:fadeIn .2s ease;
+    }
+
+    .card small{
+      display:block;
+      margin-bottom:10px;
+      font-size:12px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:14px 22px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:white;
+      box-shadow:0 14px 40px rgba(255,51,102,0.35);
+      transition:transform .12s ease, box-shadow .12s ease;
+      min-width:220px;
+    }
+
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 18px 48px rgba(255,51,102,0.45);
+    }
+
+    .ghost{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:none;
+      min-width:auto;
+    }
+
+    footer{
+      text-align:center;
+      font-size:12px;
+      color:rgba(255,255,255,0.5);
+    }
+
+    @keyframes fadeIn{
+      from{opacity:.6;transform:scale(.98)}
+      to{opacity:1;transform:scale(1)}
+    }
+
+    @media(max-width:520px){
+      button{width:100%}
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <header>
+      <h1>🔥 L’Officine – Le Dernier Round</h1>
+      <div class="subtitle">
+        L’heure n’est plus aux caresses légères…<br>
+        <em>Chaque carte est une invitation à vous abandonner.</em>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="top">
+        <span class="badge">Mode final</span>
+        <span>Cartes tirées : <strong id="count">0</strong></span>
+      </div>
+
+      <div class="card" id="card">
+        <div>
+          <small>Prêt ?</small>
+          Appuie sur le bouton pour tirer une carte… très, très chaude.
+        </div>
+      </div>
+
+      <div class="actions">
+        <button onclick="drawHotCard()">Tirer une carte finale</button>
+        <button class="ghost" onclick="resetAll()">↺ Reset</button>
+      </div>
+    </section>
+
+    <footer>
+      Conseil : ouvre en plein écran sur mobile pour une ambiance plus immersive.
+    </footer>
+
+  </div>
+
+  <script>
+    const hotCards = [
+      "Tu dois jouir sous mes yeux… sans me toucher.",
+      "Attache-moi, puis utilise ta bouche jusqu’à ce que je te supplie d’arrêter.",
+      "Lèche-moi jusqu’à ce que mes jambes tremblent.",
+      "Fais-moi jouir deux fois… sans pénétration.",
+      "Choisis un objet dans la pièce et utilise-le sur moi.",
+      "Monte sur moi, retiens mes poignets, et fais-moi gémir.",
+      "Fais-moi jouir en me donnant des ordres.",
+      "Décris-moi, pendant que tu me touches, tout ce que tu veux que je te fasse ensuite.",
+      "Doigt-moi lentement… puis rapidement… puis plus fort.",
+      "Tire mes cheveux pendant que tu me prends comme tu veux.",
+      "Je veux que tu me regardes jouir pendant que tu es encore habillé.",
+      "Tire-moi vers toi, déshabille-moi complètement et prends-moi contre le mur.",
+      "Invente un scénario sale où je te suis totalement soumis(e). Joue-le.",
+      "Fais-moi jouir pendant que tu me dis des choses obscènes à l’oreille.",
+      "Choisis une position et prends-moi sans retenue.",
+      "Lèche-moi jusqu’à ce que je te supplie que tu me pénètres.",
+      "Insère deux doigts en moi/en toi… et regarde ma réaction.",
+      "Assieds-toi sur mon visage. Je ne bougerai pas tant que tu n’auras pas joui.",
+      "Guide ma main exactement comme tu veux… jusqu’à l’explosion.",
+      "Prends le contrôle total. Tu décides de tout. Je me laisse faire."
+    ];
+
+    let count = 0;
+
+    function drawHotCard(){
+      const card = hotCards[Math.floor(Math.random() * hotCards.length)];
+      count++;
+      document.getElementById("count").textContent = count;
+      document.getElementById("card").innerHTML = `
+        <div>
+          <small>🔥 Carte finale</small>
+          ${escapeHtml(card)}
+        </div>
+      `;
+    }
+
+    function resetAll(){
+      count = 0;
+      document.getElementById("count").textContent = "0";
+      document.getElementById("card").innerHTML = `
+        <div>
+          <small>Prêt ?</small>
+          Appuie sur le bouton pour tirer une carte… très, très chaude.
+        </div>
+      `;
+    }
+
+    function escapeHtml(str){
+      return str
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+  </script>
+
+</body>
+</html>
+
