@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mes Extras · Ma Conciergerie</title>
+  <title>Mes Extras · Conciergerie ELOK</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://js.stripe.com/v3/"></script>
@@ -441,7 +441,7 @@
     <div class="hero-badge">✨ Services exclusifs</div>
     <h1>Sublimez votre séjour</h1>
     <p>Ajoutez des extras à la carte pour vivre une expérience vraiment inoubliable. Paiement sécurisé, livraison sans tracas.</p>
-    <div class="property-tag">📍 Pour votre séjour à <strong id="propertyName">L'Appartement du Marais</strong></div>
+    <div class="property-tag">📍 Pour votre séjour à <strong id="propertyName">L'Officine</strong></div>
   </div>
 </div>
 <svg class="wave" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="40" style="display:block;background:var(--forest)">
@@ -495,10 +495,10 @@ const CONFIG = {
 
   // URL de ton backend pour créer la session Stripe Checkout
   // Voir le README à la fin du fichier pour créer un backend simple
-  checkoutEndpoint: 'https://ton-backend.com/create-checkout-session',
+  checkoutEndpoint: '/.netlify/functions/create-checkout-session',',
 
   // Nom du logement (peut être passé en paramètre URL)
-  propertyName: 'L\'Appartement du Marais',
+  propertyName: 'L\Officine',
 
   // Devise
   currency: 'eur',
@@ -909,6 +909,7 @@ renderServices();
 ═══════════════════════════════════════════════════════════════
 -->
 </html>
+
 
 
 
