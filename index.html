@@ -1,188 +1,901 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Commander des extras</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mes Extras · Ma Conciergerie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#0b0b0f; color:#f5f5f7; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
-    .hero { padding: 18px 0 10px; }
-    .hero h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: .2px; }
-    .hero p { margin: 0; opacity: .85; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
-    @media (min-width: 860px){ .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    .card { background: #12121a; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px; }
-    .card h3 { margin: 0 0 8px; font-size: 16px; }
-    .price { opacity: .9; margin-bottom: 10px; }
-    .desc { opacity: .75; font-size: 13px; line-height: 1.35; margin: 0 0 12px; }
-    .row { display:flex; align-items:center; justify-content:space-between; gap: 10px; }
-    .btn { cursor:pointer; border: 0; border-radius: 12px; padding: 10px 12px; background:#e11d48; color:#fff; font-weight: 650; }
-    .btn:disabled { opacity:.5; cursor:not-allowed; }
-    .qty { display:flex; align-items:center; gap: 8px; }
-    .qbtn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background:#0f0f16; color:#fff; font-size: 18px; cursor:pointer; }
-    .qval { min-width: 20px; text-align:center; font-weight: 650; }
-    .sticky { position: sticky; bottom: 0; margin-top: 18px; padding: 12px; background: rgba(10,10,15,.92); backdrop-filter: blur(8px);
-              border: 1px solid rgba(255,255,255,.10); border-radius: 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .small { opacity:.75; font-size: 12px; }
-    .total { font-size: 16px; font-weight: 800; }
-    .notice { margin-top: 10px; opacity:.75; font-size: 12px; }
-    a { color: inherit; }
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F9F5EE;
+      --warm-white: #FFFDF8;
+      --sand: #E8DED0;
+      --terracotta: #C4714A;
+      --terracotta-dark: #A85C38;
+      --forest: #2D4A3E;
+      --forest-light: #3D6356;
+      --charcoal: #1C1C1C;
+      --mid-grey: #6B6B6B;
+      --light-grey: #B8B0A6;
+      --gold: #C9A84C;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(44,30,20,0.08);
+      --shadow-lg: 0 12px 48px rgba(44,30,20,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--forest);
+      color: white;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .logo span { color: var(--gold); }
+
+    .cart-btn {
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.15s;
+      position: relative;
+    }
+    .cart-btn:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
+    .cart-count {
+      background: white;
+      color: var(--terracotta);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .cart-count.bump { animation: bump 0.3s ease; }
+    @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--forest);
+      color: white;
+      padding: 56px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(201,168,76,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 100%, rgba(196,113,74,0.1) 0%, transparent 50%);
+    }
+    .hero-content { position: relative; max-width: 600px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      color: rgba(255,255,255,0.72);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .property-tag {
+      display: inline-block;
+      margin-top: 28px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+    }
+    .property-tag strong { color: white; }
+
+    /* ── WAVE ── */
+    .wave { display: block; margin-top: -2px; color: var(--cream); }
+
+    /* ── MAIN ── */
+    main { max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--forest);
+      margin: 48px 0 6px;
+    }
+    .section-sub {
+      color: var(--mid-grey);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    /* ── GRID ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--warm-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      border: 1.5px solid transparent;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card.in-cart { border-color: var(--forest); }
+
+    .card-emoji {
+      font-size: 2.8rem;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--sand) 0%, #F0E8DC 100%);
+      position: relative;
+    }
+    .in-cart-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--forest);
+      color: white;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      display: none;
+    }
+    .card.in-cart .in-cart-badge { display: block; }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--charcoal);
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--mid-grey);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* qty + options */
+    .card-options { margin-top: 4px; }
+    .card-options select, .card-options input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid var(--sand);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      background: var(--cream);
+      color: var(--charcoal);
+      margin-top: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .card-options select:focus, .card-options input:focus { border-color: var(--forest); }
+    .card-options label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--mid-grey);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 20px;
+      gap: 12px;
+    }
+    .card-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--forest);
+    }
+    .card-price .per { font-size: 0.75rem; font-weight: 400; color: var(--light-grey); }
+
+    .add-btn {
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .add-btn:hover { background: var(--forest-light); transform: translateY(-1px); }
+    .add-btn.added { background: var(--terracotta); }
+
+    /* ── CART DRAWER ── */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .drawer {
+      position: fixed; top: 0; right: -420px; bottom: 0;
+      width: min(420px, 100vw);
+      background: var(--warm-white);
+      z-index: 201;
+      display: flex; flex-direction: column;
+      transition: right 0.35s cubic-bezier(.4,0,.2,1);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+    }
+    .drawer.open { right: 0; }
+
+    .drawer-header {
+      padding: 24px;
+      border-bottom: 1.5px solid var(--sand);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .drawer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--forest);
+    }
+    .close-btn {
+      background: var(--sand); border: none; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .close-btn:hover { background: #d9cfc5; }
+
+    .drawer-items {
+      flex: 1; overflow-y: auto; padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .empty-cart {
+      text-align: center; color: var(--light-grey);
+      margin: 60px auto; font-size: 0.9rem;
+    }
+    .empty-cart .big { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+    .cart-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px; background: var(--cream);
+      border-radius: var(--radius-sm);
+    }
+    .cart-item-emoji { font-size: 1.8rem; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-weight: 600; font-size: 0.9rem; }
+    .cart-item-detail { font-size: 0.78rem; color: var(--mid-grey); margin-top: 2px; }
+    .cart-item-price { font-weight: 700; color: var(--forest); font-size: 0.95rem; }
+    .remove-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--light-grey); font-size: 1.1rem;
+      padding: 4px; border-radius: 4px; transition: color 0.2s;
+    }
+    .remove-btn:hover { color: var(--terracotta); }
+
+    .drawer-footer {
+      padding: 20px 24px;
+      border-top: 1.5px solid var(--sand);
+    }
+    .total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .total-label { font-size: 0.85rem; color: var(--mid-grey); }
+    .total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--forest);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .checkout-btn:hover:not(:disabled) { background: var(--terracotta-dark); transform: translateY(-1px); }
+    .checkout-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--light-grey);
+      margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--forest); color: white;
+      padding: 12px 24px; border-radius: 40px;
+      font-size: 0.875rem; font-weight: 500;
+      z-index: 300; transition: transform 0.3s ease;
+      white-space: nowrap; box-shadow: var(--shadow-lg);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 0.8rem;
+      color: var(--light-grey);
+      border-top: 1px solid var(--sand);
+    }
+
+    @media (max-width: 500px) {
+      .hero { padding: 40px 20px 56px; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="hero">
-      <h1>Ajoutez une touche luxe à votre séjour</h1>
-      <p>Choisissez vos extras, puis validez en une seule commande (paiement sécurisé).</p>
-    </div>
 
-    <div id="products" class="grid"></div>
-
-    <div class="sticky">
-      <div>
-        <div class="total">Total : <span id="total">0,00 €</span></div>
-        <div class="small"><span id="count">0</span> article(s) dans le panier</div>
-      </div>
-      <button id="checkout" class="btn" disabled>Commander</button>
-    </div>
-
-    <div class="notice">
-      Livraison discrète • Si besoin : <a href="mailto:contact@elok.fr">contact@elok.fr</a>
-    </div>
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-inner">
+    <div class="logo">Ma<span>Conciergerie</span></div>
+    <button class="cart-btn" onclick="openCart()">
+      🛍️ Mon panier
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
   </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✨ Services exclusifs</div>
+    <h1>Sublimez votre séjour</h1>
+    <p>Ajoutez des extras à la carte pour vivre une expérience vraiment inoubliable. Paiement sécurisé, livraison sans tracas.</p>
+    <div class="property-tag">📍 Pour votre séjour à <strong id="propertyName">L'Appartement du Marais</strong></div>
+  </div>
+</div>
+<svg class="wave" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="40" style="display:block;background:var(--forest)">
+  <path d="M0,40 C360,0 1080,40 1440,20 L1440,40 Z" fill="#F9F5EE"/>
+</svg>
+
+<!-- ══ MAIN ══ -->
+<main>
+  <p class="section-title">Nos services disponibles</p>
+  <p class="section-sub">Sélectionnez ce qui vous fait envie · Paiement unique et sécurisé via Stripe</p>
+
+  <div class="services-grid" id="servicesGrid"></div>
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>Paiement 100% sécurisé via Stripe &nbsp;·&nbsp; Aucun compte requis &nbsp;·&nbsp; © 2025 MaConciergerie</footer>
+
+<!-- ══ CART DRAWER ══ -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-title">🛍️ Mon panier</div>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems">
+    <div class="empty-cart"><span class="big">🛒</span>Votre panier est vide</div>
+  </div>
+  <div class="drawer-footer">
+    <div class="total-row">
+      <div class="total-label">Total à régler</div>
+      <div class="total-amount" id="totalAmount">0,00 €</div>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">
+      💳 Payer maintenant
+    </button>
+    <div class="secure-note">🔒 Paiement chiffré · Powered by Stripe</div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast"></div>
 
 <script>
-  /**
-   * IMPORTANT
-   * - "priceId" ici est un ID STRIPE PRICE (ex: price_...).
-   * - "unitAmount" ici est juste pour afficher un total sur la landing (UX).
-   *   Le vrai montant facturé sera celui du backend via Stripe (liste blanche).
-   */
-  const PRODUCTS = [
-    { id: "champagne", name: "Champagne", unitAmount: 5000, priceId: "price_CHAMPAGNE", desc: "Bouteille 75cl, fraîche et prête à savourer." },
-    { id: "prosecco",  name: "Prosecco",  unitAmount: 5000, priceId: "price_PROSECCO",  desc: "Fines bulles italiennes, parfait pour démarrer la soirée." },
-    { id: "vin_blanc", name: "Vin blanc", unitAmount: 2500, priceId: "price_VINBLANC",  desc: "Coteaux du Giennois blanc, délicat et élégant." },
-    { id: "petitdej",  name: "Petit déjeuner", unitAmount: 3500, priceId: "price_PETITDEJ", desc: "Déposé discrètement, réveil tout en douceur." },
-    { id: "chocolats", name: "Chocolats", unitAmount: 1500, priceId: "price_CHOCO",     desc: "Assortiment gourmand à partager." },
-    { id: "bougies",   name: "Bougies", unitAmount: 1200, priceId: "price_BOUGIES",    desc: "Ambiance feutrée instantanée." },
-    { id: "roses",     name: "Roses", unitAmount: 2500, priceId: "price_ROSES",        desc: "Une attention romantique à l’arrivée." },
-    { id: "late",      name: "Late check-out", unitAmount: 2000, priceId: "price_LATE", desc: "Profitez plus longtemps (selon disponibilité)." },
-    { id: "massage",   name: "Massage (sur demande)", unitAmount: 9000, priceId: "price_MASSAGE", desc: "Prestation partenaire (créneau confirmé après achat)." },
-    { id: "pack",      name: "Pack romantique", unitAmount: 6900, priceId: "price_PACK", desc: "Ambiance + gourmandises (best-seller)." }
-  ];
+// ─────────────────────────────────────────────
+//  ⚙️  CONFIGURATION — modifie ces valeurs
+// ─────────────────────────────────────────────
 
-  const cart = new Map(); // productId -> quantity
+const CONFIG = {
+  // Remplace par ta clé publique Stripe (pk_live_... ou pk_test_...)
+  stripePublicKey: 'pk_test_REMPLACE_PAR_TA_CLE_STRIPE',
 
-  const fmt = (cents) => (cents/100).toLocaleString("fr-FR", { style:"currency", currency:"EUR" });
+  // URL de ton backend pour créer la session Stripe Checkout
+  // Voir le README à la fin du fichier pour créer un backend simple
+  checkoutEndpoint: 'https://ton-backend.com/create-checkout-session',
 
-  function renderProducts(){
-    const root = document.getElementById("products");
-    root.innerHTML = "";
+  // Nom du logement (peut être passé en paramètre URL)
+  propertyName: 'L\'Appartement du Marais',
 
-    PRODUCTS.forEach(p => {
-      const qty = cart.get(p.id) || 0;
+  // Devise
+  currency: 'eur',
+};
 
-      const el = document.createElement("div");
-      el.className = "card";
-      el.innerHTML = `
-        <h3>${p.name}</h3>
-        <div class="price">${fmt(p.unitAmount)}</div>
-        <p class="desc">${p.desc}</p>
-        <div class="row">
-          <div class="qty">
-            <button class="qbtn" data-act="dec" data-id="${p.id}">−</button>
-            <div class="qval" id="q_${p.id}">${qty}</div>
-            <button class="qbtn" data-act="inc" data-id="${p.id}">+</button>
-          </div>
-          <button class="btn" data-act="add1" data-id="${p.id}">Ajouter</button>
+// Récupère le nom du logement depuis l'URL ?property=...
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('property')) {
+  CONFIG.propertyName = decodeURIComponent(urlParams.get('property'));
+}
+document.getElementById('propertyName').textContent = CONFIG.propertyName;
+
+// ─────────────────────────────────────────────
+//  🛍️  CATALOGUE DE SERVICES
+//  Modifie ici tes 10 services
+// ─────────────────────────────────────────────
+
+const SERVICES = [
+  {
+    id: 'late_checkout',
+    emoji: '🌅',
+    name: 'Départ tardif',
+    desc: 'Quittez le logement jusqu\'à 14h sans stress. Profitez d\'une dernière grasse mat\'.',
+    price: 25,
+    per: '/ séjour',
+    stripePriceId: 'price_LATE_CHECKOUT', // ← ton Price ID Stripe
+    options: [
+      { label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00', '13h00', '14h00'] }
+    ]
+  },
+  {
+    id: 'early_checkin',
+    emoji: '🔑',
+    name: 'Arrivée anticipée',
+    desc: 'Accédez au logement dès 10h pour commencer votre séjour sur les chapeaux de roue.',
+    price: 20,
+    per: '/ séjour',
+    stripePriceId: 'price_EARLY_CHECKIN',
+    options: [
+      { label: 'Heure d\'arrivée', type: 'select', name: 'heure', choices: ['10h00', '11h00', '12h00'] }
+    ]
+  },
+  {
+    id: 'menage',
+    emoji: '✨',
+    name: 'Ménage intermédiaire',
+    desc: 'Un coup de propre au milieu du séjour : linge de maison frais et appartement nickel.',
+    price: 45,
+    per: '/ passage',
+    stripePriceId: 'price_MENAGE',
+    options: []
+  },
+  {
+    id: 'champagne',
+    emoji: '🥂',
+    name: 'Bouteille de champagne',
+    desc: 'Une bouteille de champagne millésimé vous attend à votre arrivée, au frais.',
+    price: 55,
+    per: '/ bouteille',
+    stripePriceId: 'price_CHAMPAGNE',
+    options: [
+      { label: 'Occasion', type: 'select', name: 'occasion', choices: ['Anniversaire 🎂', 'Romantique 💕', 'Célébration 🎉', 'Autre'] }
+    ]
+  },
+  {
+    id: 'breakfast',
+    emoji: '🥐',
+    name: 'Panier petit-déjeuner',
+    desc: 'Croissants, jus de fruits, café, confiture artisanale et viennoiseries locales.',
+    price: 18,
+    per: '/ pers.',
+    stripePriceId: 'price_BREAKFAST',
+    options: [
+      { label: 'Nombre de personnes', type: 'select', name: 'qty', choices: ['1 personne', '2 personnes', '3 personnes', '4 personnes'] }
+    ]
+  },
+  {
+    id: 'transfer',
+    emoji: '🚖',
+    name: 'Transfert aéroport',
+    desc: 'Navette privée jusqu\'à votre aéroport. Chauffeur en tenue, ponctualité garantie.',
+    price: 65,
+    per: '/ trajet',
+    stripePriceId: 'price_TRANSFER',
+    options: [
+      { label: 'Aéroport', type: 'select', name: 'airport', choices: ['CDG - Charles de Gaulle', 'ORY - Orly', 'BVA - Beauvais'] },
+      { label: 'Date et heure (ex: 15/08 à 09h30)', type: 'input', name: 'datetime', placeholder: 'JJ/MM à HHhMM' }
+    ]
+  },
+  {
+    id: 'babysitting',
+    emoji: '🧸',
+    name: 'Baby-sitting',
+    desc: 'Garde d\'enfants assurée par un professionnel diplômé pour votre soirée en liberté.',
+    price: 22,
+    per: '/ heure',
+    stripePriceId: 'price_BABYSITTING',
+    options: [
+      { label: 'Nombre d\'heures', type: 'select', name: 'hours', choices: ['2h', '3h', '4h', '5h', '6h+'] }
+    ]
+  },
+  {
+    id: 'panier_local',
+    emoji: '🧺',
+    name: 'Panier de produits locaux',
+    desc: 'Sélection de spécialités régionales : fromages, charcuterie, vins et douceurs.',
+    price: 38,
+    per: '/ panier',
+    stripePriceId: 'price_PANIER_LOCAL',
+    options: []
+  },
+  {
+    id: 'velo',
+    emoji: '🚲',
+    name: 'Location de vélos',
+    desc: 'Explorez la ville à vélo ! Livraison et récupération au logement, casques inclus.',
+    price: 15,
+    per: '/ vélo/jour',
+    stripePriceId: 'price_VELO',
+    options: [
+      { label: 'Nombre de vélos', type: 'select', name: 'qty', choices: ['1 vélo', '2 vélos', '3 vélos', '4 vélos'] },
+      { label: 'Nombre de jours', type: 'select', name: 'days', choices: ['1 jour', '2 jours', '3 jours', '4 jours', '5 jours'] }
+    ]
+  },
+  {
+    id: 'lit_bebe',
+    emoji: '👶',
+    name: 'Lit bébé + matériel',
+    desc: 'Lit à barreaux homologué, linge lavé, chaise haute et baignoire fournis.',
+    price: 30,
+    per: '/ séjour',
+    stripePriceId: 'price_LIT_BEBE',
+    options: []
+  },
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+
+let cart = []; // [{service, options, unitPrice}]
+
+// ─────────────────────────────────────────────
+//  RENDER CARDS
+// ─────────────────────────────────────────────
+
+function renderServices() {
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = SERVICES.map(s => `
+    <div class="card" id="card-${s.id}">
+      <div class="card-emoji">
+        ${s.emoji}
+        <div class="in-cart-badge">✓ Ajouté</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${s.name}</div>
+        <div class="card-desc">${s.desc}</div>
+        ${s.options.length ? `<div class="card-options">${s.options.map(o => renderOption(s.id, o)).join('')}</div>` : ''}
+      </div>
+      <div class="card-footer">
+        <div class="card-price">
+          ${s.price}€ <span class="per">${s.per}</span>
         </div>
-      `;
-      root.appendChild(el);
+        <button class="add-btn" id="btn-${s.id}" onclick="addToCart('${s.id}')">
+          Ajouter
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderOption(sid, opt) {
+  if (opt.type === 'select') {
+    return `
+      <label>${opt.label}</label>
+      <select id="opt-${sid}-${opt.name}">
+        ${opt.choices.map(c => `<option>${c}</option>`).join('')}
+      </select>`;
+  }
+  return `
+    <label>${opt.label}</label>
+    <input type="text" id="opt-${sid}-${opt.name}" placeholder="${opt.placeholder || ''}">`;
+}
+
+// ─────────────────────────────────────────────
+//  CART LOGIC
+// ─────────────────────────────────────────────
+
+function addToCart(id) {
+  const service = SERVICES.find(s => s.id === id);
+  const opts = {};
+  service.options.forEach(o => {
+    const el = document.getElementById(`opt-${id}-${o.name}`);
+    if (el) opts[o.name] = el.value;
+  });
+
+  // Compute actual price (future: could multiply for qty services)
+  const item = { service, options: opts, unitPrice: service.price };
+  cart.push(item);
+
+  updateCartUI();
+  showToast(`${service.emoji} ${service.name} ajouté !`);
+
+  // Visual feedback on card
+  document.getElementById(`card-${id}`).classList.add('in-cart');
+  const btn = document.getElementById(`btn-${id}`);
+  btn.textContent = 'Ajouté ✓';
+  btn.classList.add('added');
+}
+
+function removeFromCart(index) {
+  const item = cart[index];
+  cart.splice(index, 1);
+  // Remove in-cart class if no more of that service
+  const stillIn = cart.some(i => i.service.id === item.service.id);
+  if (!stillIn) {
+    document.getElementById(`card-${item.service.id}`)?.classList.remove('in-cart');
+    const btn = document.getElementById(`btn-${item.service.id}`);
+    if (btn) { btn.textContent = 'Ajouter'; btn.classList.remove('added'); }
+  }
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const count = cart.length;
+  const countEl = document.getElementById('cartCount');
+  countEl.textContent = count;
+  countEl.classList.add('bump');
+  setTimeout(() => countEl.classList.remove('bump'), 350);
+
+  const total = cart.reduce((s, i) => s + i.unitPrice, 0);
+  document.getElementById('totalAmount').textContent =
+    total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const el = document.getElementById('drawerItems');
+  if (cart.length === 0) {
+    el.innerHTML = '<div class="empty-cart"><span class="big">🛒</span>Votre panier est vide</div>';
+    return;
+  }
+  el.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <div class="cart-item-emoji">${item.service.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.service.name}</div>
+        <div class="cart-item-detail">${Object.values(item.options).join(' · ') || ''}</div>
+      </div>
+      <div class="cart-item-price">${item.unitPrice}€</div>
+      <button class="remove-btn" onclick="removeFromCart(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────
+//  DRAWER
+// ─────────────────────────────────────────────
+
+function openCart() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─────────────────────────────────────────────
+//  TOAST
+// ─────────────────────────────────────────────
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─────────────────────────────────────────────
+//  STRIPE CHECKOUT
+// ─────────────────────────────────────────────
+
+async function checkout() {
+  if (cart.length === 0) { showToast('Ajoutez au moins un service 😊'); return; }
+
+  const btn = document.getElementById('checkoutBtn');
+  btn.disabled = true;
+  btn.textContent = 'Chargement…';
+
+  try {
+    // Build line items from cart
+    const lineItems = cart.map(item => ({
+      price: item.service.stripePriceId,
+      quantity: 1,
+      // Note: options are passed as metadata
+    }));
+
+    const metadata = {
+      property: CONFIG.propertyName,
+      items: JSON.stringify(cart.map(i => ({
+        name: i.service.name,
+        options: i.options,
+      })))
+    };
+
+    // Call your backend to create a Stripe Checkout session
+    const res = await fetch(CONFIG.checkoutEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        line_items: lineItems,
+        metadata,
+        success_url: window.location.href + '?success=1',
+        cancel_url: window.location.href,
+      })
     });
 
-    root.addEventListener("click", onClickProducts, { once: true });
+    const { url, error } = await res.json();
+
+    if (error) throw new Error(error);
+    if (url) window.location.href = url;
+
+  } catch (e) {
+    console.error(e);
+    showToast('Erreur de paiement — réessayez 🙏');
+    btn.disabled = false;
+    btn.innerHTML = '💳 Payer maintenant';
   }
+}
 
-  function onClickProducts(e){
-    const btn = e.target.closest("button");
-    if(!btn) return;
+// ─────────────────────────────────────────────
+//  SUCCESS MESSAGE
+// ─────────────────────────────────────────────
 
-    const act = btn.dataset.act;
-    const id = btn.dataset.id;
-    const p = PRODUCTS.find(x => x.id === id);
-    if(!p) return;
+if (urlParams.get('success') === '1') {
+  setTimeout(() => showToast('🎉 Merci ! Votre commande a bien été reçue.'), 500);
+}
 
-    const current = cart.get(id) || 0;
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
 
-    if(act === "inc" || act === "add1") cart.set(id, current + 1);
-    if(act === "dec") cart.set(id, Math.max(0, current - 1));
-
-    if(cart.get(id) === 0) cart.delete(id);
-
-    updateUI();
-    renderProducts(); // simple & robuste (10 produits = ok)
-  }
-
-  function computeTotal(){
-    let total = 0;
-    let count = 0;
-    for (const [id, qty] of cart.entries()){
-      const p = PRODUCTS.find(x => x.id === id);
-      if(!p) continue;
-      total += p.unitAmount * qty;
-      count += qty;
-    }
-    return { total, count };
-  }
-
-  function updateUI(){
-    const { total, count } = computeTotal();
-    document.getElementById("total").textContent = fmt(total);
-    document.getElementById("count").textContent = String(count);
-
-    const checkoutBtn = document.getElementById("checkout");
-    checkoutBtn.disabled = count === 0;
-  }
-
-  async function checkout(){
-    const checkoutBtn = document.getElementById("checkout");
-    checkoutBtn.disabled = true;
-    checkoutBtn.textContent = "Redirection…";
-
-    // On envoie uniquement: priceId + quantity (le backend valide)
-    const items = [];
-    for (const [id, qty] of cart.entries()){
-      const p = PRODUCTS.find(x => x.id === id);
-      if(!p) continue;
-      items.push({ priceId: p.priceId, quantity: qty });
-    }
-
-    try{
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({ items })
-      });
-
-      if(!res.ok){
-        const text = await res.text();
-        throw new Error(text || "Erreur serveur");
-      }
-
-      const { url } = await res.json();
-      window.location.href = url;
-    } catch(err){
-      alert("Impossible de lancer le paiement. " + err.message);
-      checkoutBtn.disabled = false;
-      checkoutBtn.textContent = "Commander";
-    }
-  }
-
-  document.getElementById("checkout").addEventListener("click", checkout);
-
-  renderProducts();
-  updateUI();
+renderServices();
 </script>
-</body>
+
+<!--
+═══════════════════════════════════════════════════════════════
+  📋 README — BACKEND STRIPE (Node.js / Express)
+═══════════════════════════════════════════════════════════════
+
+1. CRÉER TES PRIX DANS STRIPE DASHBOARD
+   → dashboard.stripe.com → Produits → Créer un produit
+   → Récupère le Price ID (price_XXXX) et remplace dans SERVICES[] ci-dessus
+
+2. MINI BACKEND NODE.JS (Vercel, Railway, Render...)
+
+   npm install express stripe cors
+
+   // server.js
+   const express = require('express');
+   const Stripe = require('stripe');
+   const cors = require('cors');
+   const app = express();
+   const stripe = Stripe('sk_live_TON_SECRET');
+
+   app.use(cors());
+   app.use(express.json());
+
+   app.post('/create-checkout-session', async (req, res) => {
+     try {
+       const { line_items, metadata, success_url, cancel_url } = req.body;
+       const session = await stripe.checkout.sessions.create({
+         payment_method_types: ['card'],
+         line_items,
+         mode: 'payment',
+         metadata,
+         success_url,
+         cancel_url,
+       });
+       res.json({ url: session.url });
+     } catch (e) {
+       res.status(400).json({ error: e.message });
+     }
+   });
+
+   app.listen(3000);
+
+3. PERSONNALISER L'URL
+   Envoie à tes voyageurs :
+   https://ta-boutique.com?property=Appartement+Montmartre
+
+═══════════════════════════════════════════════════════════════
+-->
 </html>
