@@ -1,0 +1,22 @@
+{
+  "name": "ma-conciergerie",
+  "version": "1.0.0",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}
+```
+5. **Commit changes** → **Commit directly to main**
+
+---
+
+## ✅ Ton repo final doit ressembler à ça
+```
+test1/
+├── index.html        ✅
+├── netlify.toml      ✅
+├── package.json      ✅ (nouveau)
+├── README.md
+└── netlify/
+    └── functions/
+        └── create-checkout-session.js  ✅
