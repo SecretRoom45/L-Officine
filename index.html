@@ -521,10 +521,10 @@ const SERVICES = [
     id: 'late_checkout',
     emoji: '🌅',
     name: 'Départ tardif',
-    desc: 'Quittez le logement jusqu\'à 14h sans stress. Profitez d\'une dernière grasse mat\'.',
+    desc: 'Quittez le logement jusqu\'à 12h00 sans stress. Profitez d\'une dernière grasse mat\'.',
     price: 25,
     per: '/ séjour',
-    stripePriceId: 'price_LATE_CHECKOUT', // ← ton Price ID Stripe
+    stripePriceId: 'price_1T01MaQc908Uqspn8nuDkZ6h', // ← ton Price ID Stripe
     options: [
       { label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00', '13h00', '14h00'] }
     ]
@@ -536,7 +536,7 @@ const SERVICES = [
     desc: 'Accédez au logement dès 10h pour commencer votre séjour sur les chapeaux de roue.',
     price: 20,
     per: '/ séjour',
-    stripePriceId: 'price_EARLY_CHECKIN',
+    stripePriceId: 'price_1T01MaQc908Uqspn8nuDkZ6h',
     options: [
       { label: 'Heure d\'arrivée', type: 'select', name: 'heure', choices: ['10h00', '11h00', '12h00'] }
     ]
@@ -899,3 +899,4 @@ renderServices();
 ═══════════════════════════════════════════════════════════════
 -->
 </html>
+
