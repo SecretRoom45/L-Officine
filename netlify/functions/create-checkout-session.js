@@ -1,14 +1,13 @@
-const Stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-  const { line_items, metadata, success_url, cancel_url } = JSON.parse(event.body);
-
   try {
+    const { line_items, metadata, success_url, cancel_url } = JSON.parse(event.body);
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items,
@@ -17,6 +16,7 @@ exports.handler = async (event) => {
       success_url,
       cancel_url,
     });
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -29,30 +29,3 @@ exports.handler = async (event) => {
     };
   }
 };
-```
-
-5. Clique sur **"Commit changes"** en bas → **"Commit directly to main"** → **"Commit changes"**
-
----
-
-## Méthode B — Sur ton ordinateur
-
-Si tu as le repo en local sur ton PC :
-
-1. Ouvre ton dossier de projet
-2. Crée les dossiers manuellement : `netlify` → dedans `functions`
-3. Dans `functions/`, crée un fichier `create-checkout-session.js`
-4. Colle le code ci-dessus dedans
-5. Sauvegarde puis `git push`
-
----
-
-## ✅ Comment vérifier que c'est bien en place
-
-Sur GitHub, tu dois voir cette arborescence :
-```
-ton-repo/
-├── index.html
-└── netlify/
-    └── functions/
-        └── create-checkout-session.js  ✅
