@@ -30,7 +30,10 @@
     }
 
     html { scroll-behavior: smooth; }
-
+body, html {
+  overflow-x: hidden;
+  max-width: 100%;
+}
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--cream);
@@ -860,55 +863,8 @@ if (urlParams.get('success') === '1') {
 renderServices();
 </script>
 
-<!--
-═══════════════════════════════════════════════════════════════
-  📋 README — BACKEND STRIPE (Node.js / Express)
-═══════════════════════════════════════════════════════════════
-
-1. CRÉER TES PRIX DANS STRIPE DASHBOARD
-   → dashboard.stripe.com → Produits → Créer un produit
-   → Récupère le Price ID (price_XXXX) et remplace dans SERVICES[] ci-dessus
-
-2. MINI BACKEND NODE.JS (Vercel, Railway, Render...)
-
-   npm install express stripe cors
-
-   // server.js
-   const express = require('express');
-   const Stripe = require('stripe');
-   const cors = require('cors');
-   const app = express();
-   const stripe = Stripe('sk_live_TON_SECRET');
-
-   app.use(cors());
-   app.use(express.json());
-
-   app.post('/create-checkout-session', async (req, res) => {
-     try {
-       const { line_items, metadata, success_url, cancel_url } = req.body;
-       const session = await stripe.checkout.sessions.create({
-         payment_method_types: ['card'],
-         line_items,
-         mode: 'payment',
-         metadata,
-         success_url,
-         cancel_url,
-       });
-       res.json({ url: session.url });
-     } catch (e) {
-       res.status(400).json({ error: e.message });
-     }
-   });
-
-   app.listen(3000);
-
-3. PERSONNALISER L'URL
-   Envoie à tes voyageurs :
-   https://ta-boutique.com?property=Appartement+Montmartre
-
-═══════════════════════════════════════════════════════════════
--->
 </html>
+
 
 
 
