@@ -4,7 +4,6 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
-
   try {
     const { line_items, metadata, success_url, cancel_url } = JSON.parse(event.body);
 
@@ -15,6 +14,26 @@ exports.handler = async (event) => {
       metadata,
       success_url,
       cancel_url,
+      custom_fields: [
+        {
+          key: 'nom_logement',
+          label: {
+            type: 'custom',
+            custom: 'Nom du logement',
+          },
+          type: 'text',
+          optional: false,
+        },
+        {
+          key: 'date_arrivee',
+          label: {
+            type: 'custom',
+            custom: "Date d'arrivée (JJ/MM/AAAA)",
+          },
+          type: 'text',
+          optional: false,
+        },
+      ],
     });
 
     return {
