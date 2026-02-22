@@ -31,10 +31,10 @@
     }
 
     html { scroll-behavior: smooth; }
-body, html {
-  overflow-x: hidden;
-  max-width: 100%;
-}
+    body, html {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--cream);
@@ -46,7 +46,7 @@ body, html {
     header {
       background: var(--forest);
       color: white;
-      padding: 0 24px;
+      padding: 0 16px;
       position: fixed;
       width: 100%;
       top: 0;
@@ -59,40 +59,51 @@ body, html {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 68px;
+      height: 56px;
+      gap: 10px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      min-width: 0;
     }
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .logo span { color: var(--gold); }
 
     .cart-btn {
       background: var(--terracotta);
       color: white;
       border: none;
       border-radius: 40px;
-      padding: 10px 20px;
+      padding: 8px 16px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       transition: background 0.2s, transform 0.15s;
-      position: relative;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .cart-btn:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
     .cart-count {
       background: white;
       color: var(--terracotta);
       border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      font-size: 0.75rem;
+      width: 20px;
+      height: 20px;
+      font-size: 0.72rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -110,6 +121,7 @@ body, html {
       text-align: center;
       position: relative;
       overflow: hidden;
+      margin-top: 56px;
     }
     .hero::before {
       content: '';
@@ -424,6 +436,8 @@ body, html {
     @media (max-width: 500px) {
       .hero { padding: 40px 20px 56px; }
       .services-grid { grid-template-columns: 1fr; }
+      .logo { font-size: 0.8rem; }
+      .cart-btn { padding: 7px 12px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -432,8 +446,10 @@ body, html {
 <!-- ══ HEADER ══ -->
 <header>
   <div class="header-inner">
-    <img src="ROND4.png" alt="ELOK" style="height: 44px; background: white; border-radius: 50%; padding: 2px;">
-    <div class="logo"><span> Mes services additionels</span></div>
+    <div class="header-left">
+      <img src="ROND4.png" alt="ELOK" style="height: 36px; background: white; border-radius: 50%; padding: 2px; flex-shrink: 0;">
+      <div class="logo">Mes services additionnels</div>
+    </div>
     <button class="cart-btn" onclick="openCart()">
       🛍️ Mon panier
       <span class="cart-count" id="cartCount">0</span>
@@ -491,36 +507,18 @@ body, html {
 <div class="toast" id="toast"></div>
 
 <script>
-// ─────────────────────────────────────────────
-//  ⚙️  CONFIGURATION — modifie ces valeurs
-// ─────────────────────────────────────────────
-
 const CONFIG = {
-  // Remplace par ta clé publique Stripe (pk_live_... ou pk_test_...)
   stripePublicKey: 'pk_live_51T2sCWEQXQOSFAvYReJfFZ9wGgP1YHoq43wY3jCoS0gr6wxVqx9gmQiyPPm8ZnJK60V8F7b1aQ1TGD4ikHomJQT000UpCnCgyB',
-
-  // URL de ton backend pour créer la session Stripe Checkout
-  // Voir le README à la fin du fichier pour créer un backend simple
   checkoutEndpoint: '/.netlify/functions/create-checkout-session',
-
-  // Nom du logement (peut être passé en paramètre URL)
   propertyName: "L'Officine",
-
-  // Devise
   currency: 'eur',
 };
 
-// Récupère le nom du logement depuis l'URL ?property=...
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('property')) {
   CONFIG.propertyName = decodeURIComponent(urlParams.get('property'));
 }
 document.getElementById('propertyName').textContent = CONFIG.propertyName;
-
-// ─────────────────────────────────────────────
-//  🛍️  CATALOGUE DE SERVICES
-//  Modifie ici tes 10 services
-// ─────────────────────────────────────────────
 
 const SERVICES = [
   {
@@ -530,7 +528,7 @@ const SERVICES = [
     desc: 'Quittez le logement jusqu\'à 12h00 sans stress. Profitez d\'une dernière grasse mat\'.',
     price: 25,
     per: '/ séjour',
-    stripePriceId: 'price_1T2tyPEQXQOSFAvYIvshdgEQ', // ← ton Price ID Stripe
+    stripePriceId: 'price_1T2tyPEQXQOSFAvYIvshdgEQ',
     options: [
       { label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00', '13h00', '14h00'] }
     ]
@@ -561,7 +559,7 @@ const SERVICES = [
     id: 'prosseco',
     emoji: '🥂',
     name: 'Prosseco',
-    desc: 'Une bouteille de prosecco vous attend à votre arrivée, au frai.',
+    desc: 'Une bouteille de prosecco vous attend à votre arrivée, au frais.',
     price: 25,
     per: '/ passage',
     stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
@@ -651,15 +649,7 @@ const SERVICES = [
   },
 ];
 
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-
-let cart = []; // [{service, options, unitPrice}]
-
-// ─────────────────────────────────────────────
-//  RENDER CARDS
-// ─────────────────────────────────────────────
+let cart = [];
 
 function renderServices() {
   const grid = document.getElementById('servicesGrid');
@@ -699,10 +689,6 @@ function renderOption(sid, opt) {
     <input type="text" id="opt-${sid}-${opt.name}" placeholder="${opt.placeholder || ''}">`;
 }
 
-// ─────────────────────────────────────────────
-//  CART LOGIC
-// ─────────────────────────────────────────────
-
 function addToCart(id) {
   const service = SERVICES.find(s => s.id === id);
   const opts = {};
@@ -710,15 +696,10 @@ function addToCart(id) {
     const el = document.getElementById(`opt-${id}-${o.name}`);
     if (el) opts[o.name] = el.value;
   });
-
-  // Compute actual price (future: could multiply for qty services)
   const item = { service, options: opts, unitPrice: service.price };
   cart.push(item);
-
   updateCartUI();
   showToast(`${service.emoji} ${service.name} ajouté !`);
-
-  // Visual feedback on card
   document.getElementById(`card-${id}`).classList.add('in-cart');
   const btn = document.getElementById(`btn-${id}`);
   btn.textContent = 'Ajouté ✓';
@@ -728,7 +709,6 @@ function addToCart(id) {
 function removeFromCart(index) {
   const item = cart[index];
   cart.splice(index, 1);
-  // Remove in-cart class if no more of that service
   const stillIn = cart.some(i => i.service.id === item.service.id);
   if (!stillIn) {
     document.getElementById(`card-${item.service.id}`)?.classList.remove('in-cart');
@@ -744,11 +724,9 @@ function updateCartUI() {
   countEl.textContent = count;
   countEl.classList.add('bump');
   setTimeout(() => countEl.classList.remove('bump'), 350);
-
   const total = cart.reduce((s, i) => s + i.unitPrice, 0);
   document.getElementById('totalAmount').textContent =
     total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-
   renderCartItems();
 }
 
@@ -771,10 +749,6 @@ function renderCartItems() {
   `).join('');
 }
 
-// ─────────────────────────────────────────────
-//  DRAWER
-// ─────────────────────────────────────────────
-
 function openCart() {
   document.getElementById('overlay').classList.add('open');
   document.getElementById('drawer').classList.add('open');
@@ -786,10 +760,6 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
-// ─────────────────────────────────────────────
-//  TOAST
-// ─────────────────────────────────────────────
-
 let toastTimer;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -799,34 +769,20 @@ function showToast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-// ─────────────────────────────────────────────
-//  STRIPE CHECKOUT
-// ─────────────────────────────────────────────
-
 async function checkout() {
   if (cart.length === 0) { showToast('Ajoutez au moins un service 😊'); return; }
-
   const btn = document.getElementById('checkoutBtn');
   btn.disabled = true;
   btn.textContent = 'Chargement…';
-
   try {
-    // Build line items from cart
     const lineItems = cart.map(item => ({
       price: item.service.stripePriceId,
       quantity: 1,
-      // Note: options are passed as metadata
     }));
-
     const metadata = {
       property: CONFIG.propertyName,
-      items: JSON.stringify(cart.map(i => ({
-        name: i.service.name,
-        options: i.options,
-      })))
+      items: JSON.stringify(cart.map(i => ({ name: i.service.name, options: i.options })))
     };
-
-    // Call your backend to create a Stripe Checkout session
     const res = await fetch(CONFIG.checkoutEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -837,12 +793,9 @@ async function checkout() {
         cancel_url: window.location.href,
       })
     });
-
     const { url, error } = await res.json();
-
     if (error) throw new Error(error);
     if (url) window.location.href = url;
-
   } catch (e) {
     console.error(e);
     showToast('Erreur de paiement — réessayez 🙏');
@@ -851,36 +804,14 @@ async function checkout() {
   }
 }
 
-// ─────────────────────────────────────────────
-//  SUCCESS MESSAGE
-// ─────────────────────────────────────────────
-
 if (urlParams.get('success') === '1') {
   setTimeout(() => showToast('🎉 Merci ! Votre commande a bien été reçue.'), 500);
 }
-
-// ─────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────
 
 renderServices();
 </script>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
