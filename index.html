@@ -551,9 +551,9 @@ const SERVICES = [
     emoji: '✨',
     name: 'Ménage intermédiaire',
     desc: 'Un coup de propre au milieu du séjour : linge de maison frais et appartement nickel.',
-    price: 45,
+    price: 1,
     per: '/ passage',
-    stripePriceId: 'price_1T2tyPEQXQOSFAvYIvshdgEQ',
+    stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
     options: []
   },
   {
@@ -562,8 +562,8 @@ const SERVICES = [
     name: 'Prosseco',
     desc: 'Une bouteille de prosecco vous attend à votre arrivée, au frais.',
     price: 25,
-    per: '/ passage',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
+    per: '/ bouteille',
+    stripePriceId: 'price_1T3fUZEQXQOSFAvYikUy5aJg',
     options: []
   },
   {
@@ -574,9 +574,15 @@ const SERVICES = [
     price: 50,
     per: '/ bouteille',
     stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
-    options: [
-      { label: 'Occasion', type: 'select', name: 'occasion', choices: ['Anniversaire 🎂', 'Romantique 💕', 'Célébration 🎉', 'Autre'] }
-    ]
+  },
+   {
+    id: 'vin blanc',
+    emoji: '🥂',
+    name: 'Bouteille de vin blanc',
+    desc: 'Une bouteille de vin blanc vous attend à votre arrivée, au frais.',
+    price: 25,
+    per: '/ bouteille',
+    stripePriceId: 'price_1T3fYGEQXQOSFAvYeL53Lo1X',
   },
   {
     id: 'breakfast',
@@ -584,37 +590,10 @@ const SERVICES = [
     name: 'Panier petit-déjeuner',
     desc: 'Croissants, jus de fruits, café, confiture artisanale et viennoiseries locales.',
     price: 35,
-    per: '/ pers.',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
-    options: [
-      { label: 'Nombre de personnes', type: 'select', name: 'qty', choices: ['1 personne', '2 personnes', '3 personnes', '4 personnes'] }
-    ]
+    per: '/ pour deux pers.',
+    stripePriceId: 'price_1T3fVFEQXQOSFAvYLxxXjVUX',  
   },
-  {
-    id: 'transfer',
-    emoji: '🚖',
-    name: 'Transfert aéroport',
-    desc: 'Navette privée jusqu\'à votre aéroport. Chauffeur en tenue, ponctualité garantie.',
-    price: 65,
-    per: '/ trajet',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
-    options: [
-      { label: 'Aéroport', type: 'select', name: 'airport', choices: ['CDG - Charles de Gaulle', 'ORY - Orly', 'BVA - Beauvais'] },
-      { label: 'Date et heure (ex: 15/08 à 09h30)', type: 'input', name: 'datetime', placeholder: 'JJ/MM à HHhMM' }
-    ]
-  },
-  {
-    id: 'babysitting',
-    emoji: '🧸',
-    name: 'Baby-sitting',
-    desc: 'Garde d\'enfants assurée par un professionnel diplômé pour votre soirée en liberté.',
-    price: 22,
-    per: '/ heure',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
-    options: [
-      { label: 'Nombre d\'heures', type: 'select', name: 'hours', choices: ['2h', '3h', '4h', '5h', '6h+'] }
-    ]
-  },
+
   {
     id: 'panier_local',
     emoji: '🧺',
@@ -622,21 +601,8 @@ const SERVICES = [
     desc: 'Sélection de spécialités régionales : fromages, charcuterie, vins et douceurs.',
     price: 40,
     per: '/ panier',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
+    stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
     options: []
-  },
-  {
-    id: 'velo',
-    emoji: '🚲',
-    name: 'Location de vélos',
-    desc: 'Explorez la ville à vélo ! Livraison et récupération au logement, casques inclus.',
-    price: 15,
-    per: '/ vélo/jour',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
-    options: [
-      { label: 'Nombre de vélos', type: 'select', name: 'qty', choices: ['1 vélo', '2 vélos', '3 vélos', '4 vélos'] },
-      { label: 'Nombre de jours', type: 'select', name: 'days', choices: ['1 jour', '2 jours', '3 jours', '4 jours', '5 jours'] }
-    ]
   },
   {
     id: 'lit_bebe',
@@ -645,7 +611,7 @@ const SERVICES = [
     desc: 'Lit à barreaux homologué, linge lavé, chaise haute et baignoire fournis.',
     price: 30,
     per: '/ séjour',
-    stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
+    stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
     options: []
   },
 ];
@@ -813,6 +779,7 @@ renderServices();
 </script>
 
 </html>
+
 
 
 
