@@ -41,16 +41,19 @@ exports.handler = async (event) => {
 };
 
 async function sendEmail({ nomLogement, dateArrivee, customerEmail, montant, devise }) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,       // ex: smtp.gmail.com
-    port: process.env.SMTP_PORT,       // ex: 587
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,     // ton adresse email
-      pass: process.env.SMTP_PASS,     // mot de passe ou app password
-    },
-  });
-
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+  tls: {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false,
+  },
+});
   await transporter.sendMail({
     from: `"ELOK eSHOP" <${process.env.SMTP_USER}>`,
     to: 'info@elok.fr',
