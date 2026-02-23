@@ -360,6 +360,76 @@
       background: rgba(0,0,0,0.18); font-size: 0.85rem;
     }
 
+    /* ── SPLASH ── */
+    .splash {
+      position: fixed; inset: 0;
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .splash-bg {
+      position: absolute; inset: 0;
+      background-image: url('IMG_9904.JPG');
+      background-size: cover;
+      background-position: center;
+    }
+    .splash-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(7,7,10,0.35) 0%,
+        rgba(7,7,10,0.55) 50%,
+        rgba(7,7,10,0.80) 100%);
+    }
+    .splash-content {
+      position: relative;
+      text-align: center;
+      padding: 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+    .splash-badge {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 7px 16px; border-radius: 999px;
+      background: rgba(0,0,0,0.28);
+      backdrop-filter: blur(8px);
+    }
+    .splash-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.55);
+    }
+    .splash-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.72);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+    .splash-btn {
+      margin-top: 10px;
+      border: 1px solid rgba(200,17,31,0.55);
+      background: linear-gradient(135deg, rgba(200,17,31,0.90), rgba(140,10,18,0.85));
+      color: white;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 0 16px 50px rgba(200,17,31,0.30);
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+    }
+    .splash-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+      box-shadow: 0 22px 60px rgba(200,17,31,0.38);
+    }
+
     @media (max-width: 520px) {
       body { padding-top: 70px; }
       .hero-panel { padding: 28px 16px; }
@@ -372,6 +442,18 @@
 
 <body>
   <div class="ambient" aria-hidden="true"></div>
+
+  <!-- ══ SPLASH SCREEN ══ -->
+  <div class="splash" id="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-overlay"></div>
+    <div class="splash-content">
+      <div class="splash-badge">✦ L'Officine</div>
+      <h2 class="splash-title">Balnéo &amp;<br>Pièce secrète</h2>
+      <p class="splash-sub">Une expérience unique vous attend</p>
+      <button class="splash-btn" onclick="enterSite()">Découvrir mes extras →</button>
+    </div>
+  </div>
 
   <!-- ══ HEADER ══ -->
   <header>
@@ -640,10 +722,11 @@
     if (urlParams.get('success') === '1')
       setTimeout(() => showToast('🎉 C\'est parfait — tout sera prêt pour vous.'), 500);
 
+    function enterSite() {
+      document.getElementById('splash').classList.add('hidden');
+    }
+
     renderServices();
   </script>
 </body>
 </html>
-
-
-
