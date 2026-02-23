@@ -22,7 +22,6 @@
       --stroke:  rgba(255,255,255,0.12);
       --stroke-2:rgba(255,255,255,0.18);
 
-      /* Red palette — no pink */
       --red:   #C8111F;
       --red-2: #A00E19;
       --red-3: #E01020;
@@ -50,7 +49,6 @@
       padding-top: 66px;
     }
 
-    /* Ambient glow — deep red only */
     .ambient {
       position: fixed; inset: -80px;
       pointer-events: none; z-index: 0;
@@ -84,15 +82,11 @@
     .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
 
     .brand-mark {
-      height: 42px; width: 42px;
-      border-radius: 999px;
-      padding: 2px;
+      height: 42px; width: 42px; border-radius: 999px; padding: 2px;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.06));
       border: 1px solid rgba(255,255,255,0.14);
       box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .brand-mark img { height: 36px; width: 36px; object-fit: cover; border-radius: 999px; }
 
@@ -103,12 +97,9 @@
     .cart-btn {
       border: 1px solid rgba(200,17,31,0.40);
       background: linear-gradient(135deg, rgba(200,17,31,0.88), rgba(160,14,25,0.80));
-      color: white;
-      border-radius: 999px;
-      padding: 10px 14px;
+      color: white; border-radius: 999px; padding: 10px 14px;
       font-size: 0.88rem; font-weight: 800;
-      cursor: pointer;
-      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; display: flex; align-items: center; gap: 10px;
       box-shadow: 0 10px 30px rgba(200,17,31,0.22);
       transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
       white-space: nowrap; flex-shrink: 0;
@@ -118,8 +109,7 @@
     .cart-count {
       width: 22px; height: 22px; border-radius: 999px;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18);
       font-size: 0.78rem; font-weight: 900;
     }
     .cart-count.bump { animation: bump .3s ease; }
@@ -139,8 +129,7 @@
       padding: 34px 22px;
     }
     .hero-panel::before {
-      content: "";
-      position: absolute; inset: -2px;
+      content: ""; position: absolute; inset: -2px;
       background: radial-gradient(900px 300px at 40% -10%, rgba(255,255,255,0.07), transparent 50%);
       pointer-events: none;
     }
@@ -148,8 +137,7 @@
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
+      padding: 8px 14px; border-radius: 999px;
       border: 1px solid rgba(200,17,31,0.40);
       background: rgba(200,17,31,0.14);
       color: rgba(255,255,255,0.86);
@@ -159,17 +147,14 @@
     .hero h1 {
       font-family: "Playfair Display", serif;
       font-size: clamp(2.05rem, 5vw, 3.15rem);
-      line-height: 1.06;
-      margin-bottom: 12px;
-      letter-spacing: 0.01em;
+      line-height: 1.06; margin-bottom: 12px; letter-spacing: 0.01em;
     }
     .hero h1 .accent { color: var(--red-3); }
     .hero p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 560px; margin: 0 auto; }
 
     .property-tag {
       display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 18px; padding: 10px 14px;
-      border-radius: 999px;
+      margin-top: 18px; padding: 10px 14px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.28);
       color: rgba(255,255,255,0.78); font-size: 0.9rem;
@@ -197,42 +182,34 @@
       position: relative;
       background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: var(--radius);
-      overflow: hidden;
+      border-radius: var(--radius); overflow: hidden;
       box-shadow: var(--shadow);
       transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-      display: flex; flex-direction: column;
-      min-height: 320px;
+      display: flex; flex-direction: column; min-height: 320px;
     }
     .card:hover      { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(200,17,31,0.30); }
     .card.in-cart    { border-color: rgba(200,17,31,0.60); box-shadow: 0 20px 70px rgba(200,17,31,0.16), var(--shadow-lg); }
-
     .card::before {
-      content: "";
-      position: absolute; inset: -2px;
+      content: ""; position: absolute; inset: -2px;
       background: radial-gradient(650px 220px at 20% 0%, rgba(200,17,31,0.14), transparent 55%);
       opacity: 0.9; pointer-events: none;
     }
 
     .card-emoji {
       position: relative; height: 120px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
+      display: flex; align-items: center; justify-content: center; font-size: 3rem;
       background:
         radial-gradient(140px 120px at 50% 40%, rgba(200,17,31,0.22), transparent 70%),
         linear-gradient(135deg, rgba(0,0,0,0.35), rgba(255,255,255,0.04));
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-      z-index: 1;
+      border-bottom: 1px solid rgba(255,255,255,0.10); z-index: 1;
     }
 
     .in-cart-badge {
-      position: absolute; top: 12px; right: 12px;
-      display: none;
+      position: absolute; top: 12px; right: 12px; display: none;
       padding: 6px 10px; border-radius: 999px;
       font-size: 0.74rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(255,255,255,0.92);
-      background: rgba(200,17,31,0.25);
-      border: 1px solid rgba(200,17,31,0.50);
+      background: rgba(200,17,31,0.25); border: 1px solid rgba(200,17,31,0.50);
       backdrop-filter: blur(10px);
     }
     .card.in-cart .in-cart-badge { display: block; }
@@ -246,10 +223,8 @@
     .card-options select,
     .card-options input {
       width: 100%; margin-top: 8px; padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.92); outline: none; font-size: 0.92rem;
+      border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35); color: rgba(255,255,255,0.92); outline: none; font-size: 0.92rem;
       transition: border-color .18s ease;
     }
     .card-options select:focus,
@@ -269,33 +244,26 @@
     .card-price .per { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.55); margin-left: 6px; }
 
     .add-btn {
-      border: 1px solid rgba(200,17,31,0.40);
-      background: rgba(200,17,31,0.14);
-      color: rgba(255,255,255,0.92);
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 0.9rem; font-weight: 900;
-      cursor: pointer;
+      border: 1px solid rgba(200,17,31,0.40); background: rgba(200,17,31,0.14);
+      color: rgba(255,255,255,0.92); border-radius: 999px; padding: 10px 16px;
+      font-size: 0.9rem; font-weight: 900; cursor: pointer;
       transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
       white-space: nowrap;
     }
     .add-btn:hover { transform: translateY(-1px); filter: brightness(1.05); background: rgba(200,17,31,0.22); border-color: rgba(200,17,31,0.60); }
     .add-btn.added { background: linear-gradient(135deg, rgba(200,17,31,0.92), rgba(160,14,25,0.85)); border-color: rgba(255,255,255,0.12); box-shadow: 0 16px 40px rgba(200,17,31,0.20); }
 
-    /* ── OVERLAY / DRAWER ── */
+    /* ── DRAWER ── */
     .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.66);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.66);
       z-index: 200; opacity: 0; pointer-events: none;
-      transition: opacity .28s ease;
-      backdrop-filter: blur(2px);
+      transition: opacity .28s ease; backdrop-filter: blur(2px);
     }
     .overlay.open { opacity: 1; pointer-events: all; }
 
     .drawer {
       position: fixed; top: 0; right: -460px; bottom: 0;
-      width: min(460px, 100vw);
-      z-index: 201; display: flex; flex-direction: column;
+      width: min(460px, 100vw); z-index: 201; display: flex; flex-direction: column;
       background: linear-gradient(180deg, rgba(12,12,18,0.98), rgba(6,6,8,0.98));
       border-left: 1px solid rgba(255,255,255,0.10);
       box-shadow: -20px 0 70px rgba(0,0,0,0.70);
@@ -312,10 +280,9 @@
 
     .close-btn {
       width: 40px; height: 40px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.9);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       transition: transform .15s ease, background .15s ease; font-size: 1.1rem;
     }
     .close-btn:hover { transform: rotate(2deg); background: rgba(255,255,255,0.12); }
@@ -326,31 +293,25 @@
     .empty-cart .big { font-size: 3rem; display: block; margin-bottom: 10px; }
 
     .cart-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px; border-radius: var(--radius-sm);
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+      display: flex; align-items: center; gap: 12px; padding: 14px;
+      border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); box-shadow: 0 10px 28px rgba(0,0,0,0.35);
     }
     .cart-item-emoji  { font-size: 1.7rem; }
     .cart-item-info   { flex: 1; min-width: 0; }
     .cart-item-name   { font-weight: 900; font-size: 0.92rem; color: rgba(255,255,255,0.92); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cart-item-detail { margin-top: 4px; font-size: 0.78rem; color: rgba(255,255,255,0.58); line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-detail { margin-top: 4px; font-size: 0.78rem; color: rgba(255,255,255,0.58); line-height: 1.35; }
     .cart-item-price  { font-weight: 900; color: rgba(255,255,255,0.92); padding-left: 6px; white-space: nowrap; }
 
     .remove-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.78);
-      width: 36px; height: 36px; border-radius: 10px;
-      cursor: pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.78); width: 36px; height: 36px; border-radius: 10px;
+      cursor: pointer; transition: transform .15s ease, border-color .15s ease, background .15s ease;
     }
     .remove-btn:hover { transform: translateY(-1px); border-color: rgba(200,17,31,0.50); background: rgba(200,17,31,0.15); }
 
     .drawer-footer {
-      padding: 18px 22px 22px;
-      border-top: 1px solid rgba(255,255,255,0.10);
+      padding: 18px 22px 22px; border-top: 1px solid rgba(255,255,255,0.10);
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
     }
     .total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
@@ -362,12 +323,10 @@
     }
 
     .checkout-btn {
-      width: 100%;
-      border: 1px solid rgba(200,17,31,0.40);
+      width: 100%; border: 1px solid rgba(200,17,31,0.40);
       background: linear-gradient(135deg, rgba(200,17,31,0.94), rgba(140,10,18,0.88));
-      color: white; border-radius: 999px;
-      padding: 16px 18px; font-size: 1rem; font-weight: 1000;
-      cursor: pointer;
+      color: white; border-radius: 999px; padding: 16px 18px;
+      font-size: 1rem; font-weight: 1000; cursor: pointer;
       transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
       display: flex; align-items: center; justify-content: center; gap: 10px;
       box-shadow: 0 16px 55px rgba(200,17,31,0.20);
@@ -375,21 +334,15 @@
     .checkout-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 20px 70px rgba(200,17,31,0.25); }
     .checkout-btn:disabled { opacity: .6; cursor: not-allowed; }
 
-    .secure-note {
-      text-align: center; font-size: 0.76rem; color: rgba(255,255,255,0.55); margin-top: 10px;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
+    .secure-note { text-align: center; font-size: 0.76rem; color: rgba(255,255,255,0.55); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
     /* ── TOAST ── */
     .toast {
       position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(90px);
-      z-index: 300;
+      transform: translateX(-50%) translateY(90px); z-index: 300;
       padding: 12px 18px; border-radius: 999px;
-      border: 1px solid rgba(200,17,31,0.40);
-      background: rgba(10,10,14,0.82);
-      backdrop-filter: blur(10px);
-      color: rgba(255,255,255,0.92);
+      border: 1px solid rgba(200,17,31,0.40); background: rgba(10,10,14,0.82);
+      backdrop-filter: blur(10px); color: rgba(255,255,255,0.92);
       box-shadow: 0 18px 70px rgba(0,0,0,0.6);
       font-weight: 800; font-size: 0.92rem; white-space: nowrap;
       transition: transform .28s ease;
@@ -398,8 +351,7 @@
 
     /* ── FOOTER ── */
     footer {
-      position: relative; z-index: 1;
-      text-align: center; padding: 26px 18px 40px;
+      position: relative; z-index: 1; text-align: center; padding: 26px 18px 40px;
       color: rgba(255,255,255,0.45);
       border-top: 1px solid rgba(255,255,255,0.08);
       background: rgba(0,0,0,0.18); font-size: 0.85rem;
@@ -426,8 +378,8 @@
           <img src="OFFICINE1.png" alt="L'OFFICINE">
         </div>
         <div class="logo">
-          <div class="small">Love Room · Extras</div>
-          <div class="big">Mes services additionnels</div>
+          <div class="small">Mon Séjour · Extras</div>
+          <div class="big">Mes services</div>
         </div>
       </div>
       <button class="cart-btn" onclick="openCart()">
@@ -441,10 +393,13 @@
   <div class="hero">
     <div class="hero-panel">
       <div class="hero-content">
-        <div class="hero-badge">🔥 Expérience Love Room</div>
-        <h1>Ajoutez une touche de <span class="accent">désir</span> à votre séjour</h1>
-        <p>Choisissez vos extras en quelques secondes. Paiement unique et sécurisé via Stripe — discret, simple, immédiat.</p>
-        <div class="property-tag">📍 Pour votre séjour à <strong id="propertyName">L'Officine</strong></div>
+        <div class="hero-badge">✦ L'Officine · Balnéo & Pièce secrète</div>
+        <h1>Chaque détail compte.<br>Surtout les <span class="accent">plus intimes.</span></h1>
+        <p>
+          Champagne au frais, petit-déjeuner au lit, départ sans hâte…
+          Composez votre séjour comme vous l'imaginiez — et laissez-nous faire le reste.
+        </p>
+        <div class="property-tag">📍 Préparé pour votre séjour à <strong id="propertyName">L'Officine</strong></div>
       </div>
     </div>
   </div>
@@ -453,21 +408,21 @@
 
   <!-- ══ MAIN ══ -->
   <main>
-    <p class="section-title">Vos extras disponibles</p>
-    <p class="section-sub">Sélectionnez ce qui vous fait envie · Paiement sécurisé · Livraison sans tracas</p>
+    <p class="section-title">Composez votre séjour idéal</p>
+    <p class="section-sub">Ajoutez ce qui vous fait envie · Tout est préparé avant votre arrivée · Paiement sécurisé</p>
     <div class="services-grid" id="servicesGrid"></div>
   </main>
 
   <!-- ══ FOOTER ══ -->
   <footer>
-    Paiement 100% sécurisé via Stripe · Aucun compte requis · © 2026 L'Officine - Balnéo &amp; pièce secrète
+    Paiement 100% sécurisé via Stripe · Discret &amp; sans compte · © 2026 L'Officine — Balnéo &amp; Pièce secrète
   </footer>
 
   <!-- ══ DRAWER ══ -->
   <div class="overlay" id="overlay" onclick="closeCart()"></div>
   <div class="drawer" id="drawer">
     <div class="drawer-header">
-      <div class="drawer-title">🖤 Votre panier</div>
+      <div class="drawer-title">🖤 Votre sélection</div>
       <button class="close-btn" onclick="closeCart()">✕</button>
     </div>
     <div class="drawer-items" id="drawerItems">
@@ -478,8 +433,8 @@
         <div class="total-label">Total à régler</div>
         <div class="total-amount" id="totalAmount">0,00 €</div>
       </div>
-      <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Payer maintenant</button>
-      <div class="secure-note">🔒 Paiement chiffré · Powered by Stripe</div>
+      <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Finaliser ma commande</button>
+      <div class="secure-note">🔒 Paiement chiffré · Discret · Powered by Stripe</div>
     </div>
   </div>
 
@@ -501,63 +456,63 @@
       {
         id: 'late_checkout', emoji: '🕛',
         name: 'Départ tardif',
-        desc: 'Quittez le logement jusqu\'à 12h00 sans stress. Profitez d\'une dernière grasse mat\'.',
+        desc: 'Encore un peu. Prolongez la nuit jusqu\'à midi — parce que certains matins méritent de durer.',
         price: 20, per: '/ séjour', stripePriceId: 'price_1T3YgpEQXQOSFAvYcTkdgweM',
         options: [{ label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00'] }]
       },
       {
         id: 'early_checkin', emoji: '🔑',
         name: 'Arrivée anticipée',
-        desc: 'Accédez au logement dès 10h pour commencer votre séjour sur les chapeaux de roue.',
+        desc: 'Pourquoi attendre ? Posez vos bagages dès 10h et laissez le séjour commencer vraiment.',
         price: 20, per: '/ séjour', stripePriceId: 'price_1T3YemEQXQOSFAvYxSxYutZE',
         options: [{ label: 'Heure d\'arrivée', type: 'select', name: 'heure', choices: ['15h00'] }]
       },
       {
         id: 'menage', emoji: '✨',
         name: 'Ménage intermédiaire',
-        desc: 'Un coup de propre au milieu du séjour : linge de maison frais et appartement nickel.',
+        desc: 'Linge frais, espace remis à neuf. Comme si vous arriviez pour la première fois — à mi-séjour.',
         price: 1, per: '/ passage', stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
         options: []
       },
       {
         id: 'prosecco', emoji: '🥂',
         name: 'Prosecco',
-        desc: 'Une bouteille de prosecco vous attend à votre arrivée, au frais.',
+        desc: 'Une bouteille fraîche qui vous attend à l\'arrivée. La première gorgée fait toute la différence.',
         price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fUZEQXQOSFAvYikUy5aJg',
         options: []
       },
       {
         id: 'champagne', emoji: '🍾',
-        name: 'Bouteille de champagne',
-        desc: 'Une bouteille de champagne millésimé vous attend à votre arrivée, au frais.',
+        name: 'Champagne',
+        desc: 'Pour les moments qui méritent mieux que l\'ordinaire. Une bouteille millésimée, au frais, rien que pour vous.',
         price: 50, per: '/ bouteille', stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
         options: []
       },
       {
         id: 'vin_blanc', emoji: '🍷',
-        name: 'Bouteille de vin blanc',
-        desc: 'Une bouteille de vin blanc vous attend à votre arrivée, au frais.',
+        name: 'Vin blanc',
+        desc: 'Une sélection soignée, légère et fraîche — parfaite pour ouvrir la soirée en douceur.',
         price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fYGEQXQOSFAvYeL53Lo1X',
         options: []
       },
       {
         id: 'breakfast', emoji: '🥐',
-        name: 'Panier petit-déjeuner',
-        desc: 'Croissants, jus de fruits, café, confiture artisanale et viennoiseries locales.',
-        price: 35, per: '/ pour deux pers.', stripePriceId: 'price_1T3fVFEQXQOSFAvYLxxXjVUX',
+        name: 'Petit-déjeuner au lit',
+        desc: 'Croissants, viennoiseries, jus frais et café. Parce que le matin commence mieux quand on ne bouge pas.',
+        price: 35, per: '/ pour deux', stripePriceId: 'price_1T3fVFEQXQOSFAvYLxxXjVUX',
         options: []
       },
       {
         id: 'panier_local', emoji: '🧺',
-        name: 'Panier de produits locaux',
-        desc: 'Sélection de spécialités régionales : fromages, charcuterie, vins et douceurs.',
+        name: 'Panier gourmand',
+        desc: 'Fromages affinés, charcuterie, vin et douceurs régionales. Une sélection pour prolonger le plaisir sans sortir.',
         price: 40, per: '/ panier', stripePriceId: 'price_1T3fvmEQXQOSFAvYRPVsrrQ7',
         options: []
       },
       {
         id: 'pack_arrivee_depart', emoji: '🕝',
-        name: 'Pack : arrivée tardive & départ tardif',
-        desc: 'Arrivée anticipée et départ tardif réunis en un seul avantage.',
+        name: 'Pack Liberté',
+        desc: 'Arrivée tôt, départ sans pression. Le combo parfait pour vivre votre séjour à votre rythme.',
         price: 35, per: '/ séjour', stripePriceId: 'price_1T3fwiEQXQOSFAvYVAKQ3ybw',
         options: []
       },
@@ -595,7 +550,7 @@
       s.options.forEach(o => { const el = document.getElementById(`opt-${id}-${o.name}`); if(el) opts[o.name] = el.value; });
       cart.push({ service: s, options: opts, unitPrice: s.price });
       updateCartUI();
-      showToast(`${s.emoji} ${s.name} ajouté !`);
+      showToast(`${s.emoji} ${s.name} — ajouté à votre séjour`);
       document.getElementById(`card-${id}`).classList.add('in-cart');
       const btn = document.getElementById(`btn-${id}`);
       btn.textContent = 'Ajouté ✓'; btn.classList.add('added');
@@ -675,18 +630,17 @@
         if (url) window.location.href = url;
       } catch(e) {
         showToast('Erreur de paiement — réessayez 🙏');
-        btn.disabled = false; btn.innerHTML = '💳 Payer maintenant';
+        btn.disabled = false; btn.innerHTML = '💳 Finaliser ma commande';
       }
     }
 
     if (urlParams.get('success') === '1')
-      setTimeout(() => showToast('🎉 Merci ! Votre commande a bien été reçue.'), 500);
+      setTimeout(() => showToast('🎉 C\'est parfait — tout sera prêt pour vous.'), 500);
 
     renderServices();
   </script>
 </body>
 </html>
-
 
 
 
