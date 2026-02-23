@@ -396,10 +396,10 @@
         <div class="hero-badge">✦ L'Officine · Balnéo &amp; Pièce secrète</div>
         <h1>Parce que chaque détail compte</h1>
         <p>
-          Champagne au frais, petit-déjeuner au lit, départ sans hâte…
-          Composez votre séjour comme vous l'imaginiez — et laissez-nous faire le reste.
+          Champagne au frais, petit-déjeuner, départ sans hâte…
+          Composez votre séjour comme vous l'imaginiez et laissez-nous faire le reste.
         </p>
-        <div class="property-tag">📍 Préparé pour votre séjour à <strong id="propertyName">L'Officine</strong></div>
+        <div class="property-tag">📍 Préparez votre séjour à <strong id="propertyName">L'Officine</strong></div>
       </div>
     </div>
   </div>
@@ -454,43 +454,43 @@
 
     const SERVICES = [
       {
-        id: 'late_checkout', emoji: '🕛',
-        name: 'Départ tardif',
-        desc: 'Encore un peu. Prolongez la nuit jusqu\'à midi — parce que certains matins méritent de durer.',
-        price: 20, per: '/ séjour', stripePriceId: 'price_1T3YgpEQXQOSFAvYcTkdgweM',
-        options: [{ label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00'] }]
-      },
-      {
         id: 'early_checkin', emoji: '🔑',
         name: 'Arrivée anticipée',
-        desc: 'Pourquoi attendre ? Posez vos bagages dès 15h et laissez le séjour commencer vraiment.',
+        desc: 'Vous souhaitez arriver plus tôt pour profiter davantage de votre séjour ? Avec notre option "Arrivée anticipée", débutez l\'expérience dès 15h (au lieu de 17h).',
         price: 20, per: '/ séjour', stripePriceId: 'price_1T3YemEQXQOSFAvYxSxYutZE',
         options: [{ label: 'Heure d\'arrivée', type: 'select', name: 'heure', choices: ['15h00'] }]
       },
       {
-        id: 'test', emoji: '✨',
-        name: 'test',
-        desc: 'xx',
-        price: 1, per: '/ passage', stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
-        options: []
+        id: 'late_checkout', emoji: '⌛',
+        name: 'Départ tardif',
+        desc: 'Pas besoin de se presser ! Avec notre option "Départ tardif", prolongez l\'expérience et quittez les lieux à 12h (au lieu de 10h) le jour de votre départ. Parce que certains matins méritent de durer.',
+        price: 20, per: '/ séjour', stripePriceId: 'price_1T3YgpEQXQOSFAvYcTkdgweM',
+        options: [{ label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00'] }]
       },
       {
-        id: 'prosecco', emoji: '🥂',
-        name: 'Bouteille de Prosecco',
-        desc: 'Laissez pétiller votre séjour… Une bouteille de Prosecco fraîche, prête à être dégustée dès votre arrivée pour créer une ambiance élégante et festive.',
-        price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fUZEQXQOSFAvYikUy5aJg',
+        id: 'pack_arrivee_depart', emoji: '🕰️',
+        name: 'Pack Liberté',
+        desc: 'Profitez pleinement de votre séjour : arrivée anticipée à 15h au lieu de 17h et départ tardif à 12h au lieu de 10h pour savourer chaque instant sans contrainte.',
+        price: 35, per: '/ séjour', stripePriceId: 'price_1T3fwiEQXQOSFAvYVAKQ3ybw',
         options: []
-      },
+      }, 
       {
         id: 'champagne', emoji: '🍾',
-        name: 'Bouteille de champagne',
-        desc: 'Une bouteille de Champagne brut, fraîche et prête à être dégustée, vous attend à votre arrivée pour transformer votre séjour en moment d\'exception.',
+        name: 'Champagne',
+        desc: 'Une bouteille de Champagne brut, fraîche et prête à être dégustée vous attend à votre arrivée pour transformer votre séjour en moment d\'exception.',
         price: 50, per: '/ bouteille', stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
         options: []
       },
       {
+        id: 'prosecco', emoji: '🥂',
+        name: 'Prosecco',
+        desc: 'Laissez pétiller votre séjour… Une bouteille de Prosecco fraîche prête à être dégustée dès votre arrivée pour créer une ambiance élégante et festive.',
+        price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fUZEQXQOSFAvYikUy5aJg',
+        options: []
+      },
+      {
         id: 'vin_blanc', emoji: '🍷',
-        name: 'Bouteille de vin blanc',
+        name: 'Vin blanc',
         desc: 'Découvrez un vin blanc du Coteaux du Giennois, frais et élégant, issu de notre terroir local. Parfait pour savourer l\'instant avec une touche authentique.',
         price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fYGEQXQOSFAvYeL53Lo1X',
         options: []
@@ -503,17 +503,17 @@
         options: []
       },
       {
-        id: 'panier_local', emoji: '🧺',
+        id: 'panier_local', emoji: '🧀',
         name: 'Planche apéritive locale pour 2',
         desc: 'Régalez-vous avec notre planche apéritive : 200 g de charcuterie premium, 200 g de fromages variés, beurre et pain frais. Saveurs et convivialité garanties.',
         price: 40, per: '/ planche', stripePriceId: 'price_1T3fvmEQXQOSFAvYRPVsrrQ7',
         options: []
       },
-      {
-        id: 'pack_arrivee_depart', emoji: '🕝',
-        name: 'Pack Liberté',
-        desc: 'Profitez pleinement de votre séjour : arrivée anticipée à 15h au lieu de 17h et départ tardif à 12h au lieu de 10h pour savourer chaque instant sans contrainte.',
-        price: 35, per: '/ séjour', stripePriceId: 'price_1T3fwiEQXQOSFAvYVAKQ3ybw',
+       {
+        id: 'test', emoji: '✨',
+        name: 'test',
+        desc: 'xx',
+        price: 1, per: '/ passage', stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
         options: []
       },
     ];
@@ -641,3 +641,4 @@
   </script>
 </body>
 </html>
+
