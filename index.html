@@ -98,7 +98,7 @@
       border: 1px solid rgba(200,17,31,0.40);
       background: linear-gradient(135deg, rgba(200,17,31,0.88), rgba(160,14,25,0.80));
       color: white; border-radius: 999px; padding: 10px 14px;
-      font-size: 1rem; font-weight: 800;
+      font-size: 1.1rem; font-weight: 800;
       cursor: pointer; display: flex; align-items: center; gap: 10px;
       box-shadow: 0 10px 30px rgba(200,17,31,0.22);
       transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
@@ -195,9 +195,10 @@
       opacity: 0.9; pointer-events: none;
     }
 
+    /* ── CORRECTION 1 : encart emoji réduit ── */
     .card-emoji {
-      position: relative; height: 120px;
-      display: flex; align-items: center; justify-content: center; font-size: 3rem;
+      position: relative; height: 56px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
       background:
         radial-gradient(140px 120px at 50% 40%, rgba(200,17,31,0.22), transparent 70%),
         linear-gradient(135deg, rgba(0,0,0,0.35), rgba(255,255,255,0.04));
@@ -205,9 +206,9 @@
     }
 
     .in-cart-badge {
-      position: absolute; top: 12px; right: 12px; display: none;
-      padding: 6px 10px; border-radius: 999px;
-      font-size: 0.74rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
+      position: absolute; top: 8px; right: 10px; display: none;
+      padding: 4px 8px; border-radius: 999px;
+      font-size: 0.70rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(255,255,255,0.92);
       background: rgba(200,17,31,0.25); border: 1px solid rgba(200,17,31,0.50);
       backdrop-filter: blur(10px);
@@ -216,7 +217,9 @@
 
     .card-body { padding: 18px 18px 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; position: relative; z-index: 1; }
     .card-name { font-family: "Playfair Display", serif; font-size: 1.12rem; letter-spacing: 0.01em; color: rgba(255,255,255,0.94); }
-    .card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; flex: 1; }
+
+    /* ── CORRECTION 2 : description plus grande ── */
+    .card-desc { font-size: 1rem; color: var(--muted); line-height: 1.65; flex: 1; }
 
     .card-options { margin-top: 4px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.10); }
     .card-options label { display: block; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-top: 10px; }
@@ -473,7 +476,7 @@
         desc: 'Profitez pleinement de votre séjour : arrivée anticipée à 15h au lieu de 17h et départ tardif à 12h au lieu de 10h pour savourer chaque instant sans contrainte.',
         price: 35, per: '/ séjour', stripePriceId: 'price_1T3fwiEQXQOSFAvYVAKQ3ybw',
         options: []
-      }, 
+      },
       {
         id: 'champagne', emoji: '🍾',
         name: 'Champagne',
@@ -509,7 +512,7 @@
         price: 40, per: '/ planche', stripePriceId: 'price_1T3fvmEQXQOSFAvYRPVsrrQ7',
         options: []
       },
-       {
+      {
         id: 'test', emoji: '✨',
         name: 'test',
         desc: 'xx',
