@@ -7,665 +7,416 @@
   <title>Mes Extras · L'Officine</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://js.stripe.com/v3/"></script>
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body, html { overflow-x: hidden; }
+    body, html { overflow-x: hidden; max-width: 100%; }
 
     :root {
-      --bg:       #0C0B09;
-      --bg-2:     #111009;
-      --surface:  #161410;
-      --surface-2:#1D1B16;
-      --gold:     #C9A96E;
-      --gold-2:   #E8C98A;
-      --gold-dim: rgba(201,169,110,0.18);
-      --gold-line:rgba(201,169,110,0.28);
-      --text:     #EDE8DC;
-      --muted:    #9E9585;
-      --soft:     #5E5A52;
-      --stroke:   rgba(255,255,255,0.07);
-      --stroke-2: rgba(201,169,110,0.22);
-      --max:      1080px;
+      --bg:    #07070A;
+      --bg-2:  #0D0D12;
+      --panel: rgba(255,255,255,0.06);
+      --stroke:  rgba(255,255,255,0.12);
+      --stroke-2:rgba(255,255,255,0.18);
+
+      /* Red palette — no pink */
+      --red:   #C8111F;
+      --red-2: #A00E19;
+      --red-3: #E01020;
+
+      --text:  rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --soft:  rgba(255,255,255,0.48);
+
+      --shadow:    0 10px 40px rgba(0,0,0,0.55);
+      --shadow-lg: 0 20px 70px rgba(0,0,0,0.72);
+      --radius:    18px;
+      --radius-sm: 12px;
+      --radius-lg: 26px;
+      --max: 1040px;
     }
 
     body {
-      font-family: "Jost", sans-serif;
-      font-weight: 300;
-      background: var(--bg);
+      font-family: "DM Sans", system-ui, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(200,17,31,0.18), transparent 60%),
+        radial-gradient(900px 700px at 90% 10%,  rgba(200,17,31,0.14), transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, #050507 100%);
       color: var(--text);
       min-height: 100vh;
+      padding-top: 66px;
     }
 
-    /* Grain */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.032;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    /* Ambient glow — deep red only */
+    .ambient {
+      position: fixed; inset: -80px;
+      pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(800px 500px at 15% 20%, rgba(200,17,31,0.11), transparent 60%),
+        radial-gradient(700px 480px at 85% 30%, rgba(160,14,25,0.10), transparent 60%),
+        radial-gradient(700px 480px at 55% 90%, rgba(200,17,31,0.07), transparent 60%);
+      filter: blur(18px);
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      0%   { transform: translate3d(0,0,0) scale(1); }
+      100% { transform: translate3d(-12px,14px,0) scale(1.03); }
     }
 
     /* ── HEADER ── */
     header {
-      position: fixed;
-      top: 0; left: 0; width: 100%;
+      position: fixed; top: 0; left: 0; width: 100%;
       z-index: 120;
-      background: rgba(12,11,9,0.90);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--stroke);
+      background: rgba(10,10,14,0.72);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.35);
     }
     .header-inner {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 36px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      padding: 12px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
-    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
 
     .brand-mark {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      border: 1px solid var(--stroke-2);
-      overflow: hidden;
+      height: 42px; width: 42px;
+      border-radius: 999px;
+      padding: 2px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
       flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
     }
-    .brand-mark img { width: 38px; height: 38px; object-fit: cover; }
+    .brand-mark img { height: 36px; width: 36px; object-fit: cover; border-radius: 999px; }
 
-    .logo-sep { width: 1px; height: 26px; background: var(--stroke-2); }
-
-    .logo { display: flex; flex-direction: column; line-height: 1.2; }
-    .logo .small {
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-    .logo .big {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.1rem;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.06em;
-    }
+    .logo { font-weight: 700; letter-spacing: 0.02em; display: flex; flex-direction: column; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .logo .small { font-size: 0.72rem; color: var(--soft); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+    .logo .big   { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; color: rgba(255,255,255,0.92); }
 
     .cart-btn {
-      background: transparent;
-      border: 1px solid var(--stroke-2);
-      color: var(--text);
-      padding: 9px 20px;
-      font-family: "Jost", sans-serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      border: 1px solid rgba(200,17,31,0.40);
+      background: linear-gradient(135deg, rgba(200,17,31,0.88), rgba(160,14,25,0.80));
+      color: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.88rem; font-weight: 800;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: border-color 0.2s, background 0.2s;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 30px rgba(200,17,31,0.22);
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      white-space: nowrap; flex-shrink: 0;
     }
-    .cart-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+    .cart-btn:hover { transform: translateY(-1px); filter: brightness(1.07); box-shadow: 0 14px 40px rgba(200,17,31,0.28); }
 
     .cart-count {
-      min-width: 20px; height: 20px;
-      border-radius: 50%;
-      background: var(--gold);
-      color: var(--bg);
+      width: 22px; height: 22px; border-radius: 999px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.78rem; font-weight: 900;
     }
     .cart-count.bump { animation: bump .3s ease; }
-    @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+    @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
 
     /* ── HERO ── */
-    .hero {
-      padding-top: 70px;
-      position: relative;
-      background: var(--bg);
-      overflow: hidden;
+    .hero { position: relative; z-index: 1; max-width: var(--max); margin: 18px auto 0; padding: 26px 18px 0; }
+    .hero-panel {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(900px 400px at 15% 10%, rgba(200,17,31,0.20), transparent 60%),
+        radial-gradient(800px 380px at 90% 20%, rgba(200,17,31,0.22), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+      box-shadow: var(--shadow-lg);
+      padding: 34px 22px;
     }
-    .hero::before {
+    .hero-panel::before {
       content: "";
-      position: absolute;
-      top: -120px; right: -100px;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 65%);
+      position: absolute; inset: -2px;
+      background: radial-gradient(900px 300px at 40% -10%, rgba(255,255,255,0.07), transparent 50%);
       pointer-events: none;
     }
+    .hero-content { position: relative; max-width: 720px; margin: 0 auto; text-align: center; }
 
-    .hero-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 90px 36px 70px;
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      align-items: center;
-      gap: 80px;
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(200,17,31,0.40);
+      background: rgba(200,17,31,0.14);
+      color: rgba(255,255,255,0.86);
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 14px;
     }
-
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
-    }
-    .eyebrow-line { width: 32px; height: 1px; background: var(--gold); opacity: 0.6; }
-
     .hero h1 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
-      font-weight: 300;
-      line-height: 1.10;
-      color: var(--text);
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.05rem, 5vw, 3.15rem);
+      line-height: 1.06;
+      margin-bottom: 12px;
       letter-spacing: 0.01em;
-      margin-bottom: 26px;
     }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-    .hero-desc {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.9;
-      max-width: 400px;
-    }
-    .property-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 32px;
-      padding: 9px 16px;
-      border: 1px solid var(--stroke-2);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-    }
-    .property-chip strong { color: var(--gold); font-weight: 400; }
+    .hero h1 .accent { color: var(--red-3); }
+    .hero p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 560px; margin: 0 auto; }
 
-    .hero-deco {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3/4;
-      border: 1px solid var(--stroke-2);
-      background: var(--surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    .property-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 18px; padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.28);
+      color: rgba(255,255,255,0.78); font-size: 0.9rem;
     }
-    .hero-deco::before {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border: 1px solid var(--stroke);
-    }
-    .deco-word {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 7rem;
-      color: rgba(201,169,110,0.07);
-      font-weight: 300;
-      user-select: none;
-      line-height: 1;
-    }
-    .deco-tag {
-      position: absolute;
-      bottom: 18px;
-      left: 18px;
-      right: 18px;
-      padding: 12px 16px;
-      border-top: 1px solid var(--stroke-2);
-      font-size: 0.6rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
+    .property-tag strong { color: rgba(255,255,255,0.96); font-weight: 900; }
 
-    /* ── GOLD RULE ── */
-    .gold-rule {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 36px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .gold-rule::before, .gold-rule::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
-    }
-    .gold-diamond {
-      width: 5px; height: 5px;
-      background: var(--gold);
-      transform: rotate(45deg);
-      flex-shrink: 0;
-      opacity: 0.7;
+    /* ── DIVIDER ── */
+    .divider { max-width: var(--max); margin: 18px auto 0; padding: 0 18px; z-index: 1; position: relative; }
+    .divider .line {
+      height: 2px; border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(200,17,31,0.60), rgba(255,255,255,0.08), rgba(160,14,25,0.50), transparent);
+      opacity: 0.9;
     }
 
     /* ── MAIN ── */
-    main {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 64px 36px 100px;
-    }
-    .section-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--stroke);
-    }
-    .section-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.7rem;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.02em;
-    }
-    .section-sub {
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      color: var(--soft);
-      text-transform: uppercase;
-    }
+    main { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 22px 18px 86px; }
+    .section-title { font-family: "Playfair Display", serif; font-size: 1.55rem; margin: 26px 0 8px; letter-spacing: 0.01em; }
+    .section-sub   { color: var(--muted); font-size: 0.95rem; margin-bottom: 22px; }
 
     /* ── GRID ── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--stroke);
-      border: 1px solid var(--stroke);
-    }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
 
     /* ── CARD ── */
     .card {
       position: relative;
-      background: var(--surface);
-      display: flex;
-      flex-direction: column;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      display: flex; flex-direction: column;
       min-height: 320px;
-      transition: background 0.25s;
     }
-    .card:hover { background: var(--surface-2); }
-    .card.in-cart { background: var(--surface-2); }
+    .card:hover      { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(200,17,31,0.30); }
+    .card.in-cart    { border-color: rgba(200,17,31,0.60); box-shadow: 0 20px 70px rgba(200,17,31,0.16), var(--shadow-lg); }
 
     .card::before {
       content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: var(--gold);
-      opacity: 0;
-      transition: opacity 0.25s;
-      z-index: 2;
-    }
-    .card:hover::before, .card.in-cart::before { opacity: 1; }
-
-    .card-inner {
-      padding: 28px 26px 24px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      position: absolute; inset: -2px;
+      background: radial-gradient(650px 220px at 20% 0%, rgba(200,17,31,0.14), transparent 55%);
+      opacity: 0.9; pointer-events: none;
     }
 
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .card-icon {
-      width: 44px; height: 44px;
-      border: 1px solid var(--stroke-2);
-      background: var(--bg-2);
+    .card-emoji {
+      position: relative; height: 120px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.35rem;
-      flex-shrink: 0;
-      transition: border-color 0.2s;
+      font-size: 3rem;
+      background:
+        radial-gradient(140px 120px at 50% 40%, rgba(200,17,31,0.22), transparent 70%),
+        linear-gradient(135deg, rgba(0,0,0,0.35), rgba(255,255,255,0.04));
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      z-index: 1;
     }
-    .card:hover .card-icon, .card.in-cart .card-icon { border-color: rgba(201,169,110,0.45); }
 
     .in-cart-badge {
+      position: absolute; top: 12px; right: 12px;
       display: none;
-      font-size: 0.58rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-weight: 500;
-      padding-top: 3px;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 0.74rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      background: rgba(200,17,31,0.25);
+      border: 1px solid rgba(200,17,31,0.50);
+      backdrop-filter: blur(10px);
     }
     .card.in-cart .in-cart-badge { display: block; }
 
-    .card-name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.18rem;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.02em;
-      line-height: 1.3;
-      margin-bottom: 10px;
-    }
-    .card-desc {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.8;
-      font-weight: 300;
-      flex: 1;
-      margin-bottom: 20px;
-    }
+    .card-body { padding: 18px 18px 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; position: relative; z-index: 1; }
+    .card-name { font-family: "Playfair Display", serif; font-size: 1.12rem; letter-spacing: 0.01em; color: rgba(255,255,255,0.94); }
+    .card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; flex: 1; }
 
-    .card-options { margin-bottom: 16px; }
-    .card-options label {
-      display: block;
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.20em;
-      text-transform: uppercase;
-      color: var(--soft);
-      margin-bottom: 7px;
-    }
+    .card-options { margin-top: 4px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.10); }
+    .card-options label { display: block; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-top: 10px; }
     .card-options select,
     .card-options input {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1px solid var(--stroke);
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-      font-family: "Jost", sans-serif;
-      font-size: 0.83rem;
-      font-weight: 300;
-      appearance: none;
-      transition: border-color 0.18s;
+      width: 100%; margin-top: 8px; padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.92); outline: none; font-size: 0.92rem;
+      transition: border-color .18s ease;
     }
     .card-options select:focus,
-    .card-options input:focus { border-color: var(--gold-line); }
-    .card-options input::placeholder { color: var(--soft); }
+    .card-options input:focus { border-color: rgba(200,17,31,0.55); }
+    .card-options input::placeholder { color: rgba(255,255,255,0.40); }
 
     .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-top: 18px;
-      border-top: 1px solid var(--stroke);
+      padding: 0 18px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      position: relative; z-index: 1;
     }
     .card-price {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.55rem;
-      font-weight: 400;
-      color: var(--text);
+      font-size: 1.28rem; font-weight: 900; letter-spacing: 0.01em;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(200,17,31,0.75));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .card-price .per {
-      font-family: "Jost", sans-serif;
-      font-size: 0.65rem;
-      font-weight: 300;
-      color: var(--soft);
-      letter-spacing: 0.08em;
-      margin-left: 4px;
-    }
+    .card-price .per { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.55); margin-left: 6px; }
 
     .add-btn {
-      background: transparent;
-      border: 1px solid var(--stroke-2);
-      color: var(--muted);
-      padding: 9px 16px;
-      font-family: "Jost", sans-serif;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      border: 1px solid rgba(200,17,31,0.40);
+      background: rgba(200,17,31,0.14);
+      color: rgba(255,255,255,0.92);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 0.9rem; font-weight: 900;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
       white-space: nowrap;
     }
-    .add-btn:hover {
-      background: var(--gold-dim);
-      border-color: var(--gold);
-      color: var(--gold-2);
-    }
-    .add-btn.added {
-      background: var(--gold-dim);
-      border-color: var(--gold);
-      color: var(--gold-2);
-    }
+    .add-btn:hover { transform: translateY(-1px); filter: brightness(1.05); background: rgba(200,17,31,0.22); border-color: rgba(200,17,31,0.60); }
+    .add-btn.added { background: linear-gradient(135deg, rgba(200,17,31,0.92), rgba(160,14,25,0.85)); border-color: rgba(255,255,255,0.12); box-shadow: 0 16px 40px rgba(200,17,31,0.20); }
 
-    /* ── DRAWER ── */
+    /* ── OVERLAY / DRAWER ── */
     .overlay {
       position: fixed; inset: 0;
-      background: rgba(5,4,3,0.65);
-      z-index: 200;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s;
-      backdrop-filter: blur(3px);
+      background: rgba(0,0,0,0.66);
+      z-index: 200; opacity: 0; pointer-events: none;
+      transition: opacity .28s ease;
+      backdrop-filter: blur(2px);
     }
     .overlay.open { opacity: 1; pointer-events: all; }
 
     .drawer {
-      position: fixed; top: 0; right: -500px; bottom: 0;
+      position: fixed; top: 0; right: -460px; bottom: 0;
       width: min(460px, 100vw);
-      z-index: 201;
-      display: flex; flex-direction: column;
-      background: var(--surface);
-      border-left: 1px solid var(--stroke);
-      box-shadow: -24px 0 80px rgba(0,0,0,0.55);
-      transition: right 0.38s cubic-bezier(.4,0,.2,1);
+      z-index: 201; display: flex; flex-direction: column;
+      background: linear-gradient(180deg, rgba(12,12,18,0.98), rgba(6,6,8,0.98));
+      border-left: 1px solid rgba(255,255,255,0.10);
+      box-shadow: -20px 0 70px rgba(0,0,0,0.70);
+      transition: right .35s cubic-bezier(.4,0,.2,1);
     }
     .drawer.open { right: 0; }
 
     .drawer-header {
-      padding: 26px 28px 20px;
+      padding: 22px 22px 16px;
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--stroke);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
     }
-    .drawer-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.03em;
-    }
-    .close-btn {
-      width: 36px; height: 36px;
-      border: 1px solid var(--stroke);
-      background: transparent;
-      color: var(--soft);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem;
-      transition: border-color 0.18s, color 0.18s;
-    }
-    .close-btn:hover { border-color: var(--gold-line); color: var(--gold); }
+    .drawer-title { font-family: "Playfair Display", serif; font-size: 1.35rem; color: rgba(255,255,255,0.92); letter-spacing: 0.01em; }
 
-    .drawer-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 28px;
-      display: flex; flex-direction: column; gap: 0;
+    .close-btn {
+      width: 40px; height: 40px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: transform .15s ease, background .15s ease; font-size: 1.1rem;
     }
-    .empty-cart {
-      text-align: center;
-      color: var(--soft);
-      margin: 80px auto;
-    }
-    .empty-cart .big {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 3rem;
-      color: var(--stroke-2);
-      margin-bottom: 12px;
-    }
-    .empty-cart p { font-size: 0.82rem; letter-spacing: 0.08em; }
+    .close-btn:hover { transform: rotate(2deg); background: rgba(255,255,255,0.12); }
+
+    .drawer-items { flex: 1; overflow-y: auto; padding: 18px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+    .empty-cart { text-align: center; color: rgba(255,255,255,0.55); margin: 70px auto; font-size: 0.95rem; }
+    .empty-cart .big { font-size: 3rem; display: block; margin-bottom: 10px; }
 
     .cart-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 17px 0;
-      border-bottom: 1px solid var(--stroke);
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px; border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
     }
-    .cart-item-emoji {
-      width: 42px; height: 42px;
-      border: 1px solid var(--stroke);
-      background: var(--bg-2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-    .cart-item-info { flex: 1; min-width: 0; }
-    .cart-item-name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.05rem;
-      color: var(--text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .cart-item-detail {
-      margin-top: 3px;
-      font-size: 0.7rem;
-      color: var(--soft);
-      letter-spacing: 0.06em;
-    }
-    .cart-item-price {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.15rem;
-      color: var(--text);
-      white-space: nowrap;
-      padding-left: 8px;
-    }
+    .cart-item-emoji  { font-size: 1.7rem; }
+    .cart-item-info   { flex: 1; min-width: 0; }
+    .cart-item-name   { font-weight: 900; font-size: 0.92rem; color: rgba(255,255,255,0.92); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-detail { margin-top: 4px; font-size: 0.78rem; color: rgba(255,255,255,0.58); line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-price  { font-weight: 900; color: rgba(255,255,255,0.92); padding-left: 6px; white-space: nowrap; }
+
     .remove-btn {
       background: transparent;
-      border: 1px solid var(--stroke);
-      color: var(--soft);
-      width: 30px; height: 30px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.78);
+      width: 36px; height: 36px; border-radius: 10px;
       cursor: pointer;
-      font-size: 0.7rem;
-      transition: border-color 0.18s, color 0.18s;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
     }
-    .remove-btn:hover { border-color: var(--gold-line); color: var(--gold); }
+    .remove-btn:hover { transform: translateY(-1px); border-color: rgba(200,17,31,0.50); background: rgba(200,17,31,0.15); }
 
     .drawer-footer {
-      padding: 20px 28px 28px;
-      border-top: 1px solid var(--stroke-2);
-      background: var(--bg-2);
+      padding: 18px 22px 22px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
     }
-    .total-row {
-      display: flex; align-items: baseline; justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .total-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--soft);
-    }
+    .total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .total-label  { color: rgba(255,255,255,0.62); font-size: 0.9rem; }
     .total-amount {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 2.1rem;
-      font-weight: 300;
-      color: var(--gold-2);
+      font-family: "Playfair Display", serif; font-size: 1.55rem; font-weight: 900;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(200,17,31,0.80));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
 
     .checkout-btn {
       width: 100%;
-      background: var(--gold);
-      border: 1px solid var(--gold);
-      color: var(--bg);
-      padding: 15px;
-      font-family: "Jost", sans-serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
+      border: 1px solid rgba(200,17,31,0.40);
+      background: linear-gradient(135deg, rgba(200,17,31,0.94), rgba(140,10,18,0.88));
+      color: white; border-radius: 999px;
+      padding: 16px 18px; font-size: 1rem; font-weight: 1000;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 16px 55px rgba(200,17,31,0.20);
     }
-    .checkout-btn:hover:not(:disabled) { background: var(--gold-2); border-color: var(--gold-2); }
-    .checkout-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .checkout-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 20px 70px rgba(200,17,31,0.25); }
+    .checkout-btn:disabled { opacity: .6; cursor: not-allowed; }
 
     .secure-note {
-      text-align: center;
-      font-size: 0.62rem;
-      color: var(--soft);
-      margin-top: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      text-align: center; font-size: 0.76rem; color: rgba(255,255,255,0.55); margin-top: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
 
     /* ── TOAST ── */
     .toast {
-      position: fixed;
-      bottom: 28px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(90px);
       z-index: 300;
-      padding: 12px 22px;
-      border: 1px solid var(--stroke-2);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 0.77rem;
-      letter-spacing: 0.10em;
-      white-space: nowrap;
-      transition: transform 0.28s ease;
+      padding: 12px 18px; border-radius: 999px;
+      border: 1px solid rgba(200,17,31,0.40);
+      background: rgba(10,10,14,0.82);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,0.92);
+      box-shadow: 0 18px 70px rgba(0,0,0,0.6);
+      font-weight: 800; font-size: 0.92rem; white-space: nowrap;
+      transition: transform .28s ease;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     /* ── FOOTER ── */
     footer {
-      text-align: center;
-      padding: 28px 36px 36px;
-      border-top: 1px solid var(--stroke);
-      background: var(--bg-2);
-    }
-    .footer-name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      margin-bottom: 7px;
-    }
-    .footer-copy {
-      font-size: 0.62rem;
-      color: var(--soft);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      position: relative; z-index: 1;
+      text-align: center; padding: 26px 18px 40px;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.18); font-size: 0.85rem;
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 0; }
-      .hero-deco { display: none; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .header-inner, main { padding-left: 20px; padding-right: 20px; }
-      .hero-inner { padding-left: 20px; padding-right: 20px; }
-      .gold-rule { padding-left: 20px; padding-right: 20px; }
-    }
-    @media (max-width: 560px) {
+    @media (max-width: 520px) {
+      body { padding-top: 70px; }
+      .hero-panel { padding: 28px 16px; }
+      .logo .big { font-size: 1rem; }
+      .cart-btn { padding: 10px 12px; font-size: 0.86rem; }
       .services-grid { grid-template-columns: 1fr; }
-      .section-head { flex-direction: column; gap: 6px; }
     }
   </style>
 </head>
 
 <body>
+  <div class="ambient" aria-hidden="true"></div>
 
   <!-- ══ HEADER ══ -->
   <header>
@@ -674,14 +425,13 @@
         <div class="brand-mark">
           <img src="OFFICINE1.png" alt="L'OFFICINE">
         </div>
-        <div class="logo-sep"></div>
         <div class="logo">
-          <div class="small">Love Room &middot; Extras</div>
-          <div class="big">L'Officine</div>
+          <div class="small">Love Room · Extras</div>
+          <div class="big">Mes services additionnels</div>
         </div>
       </div>
       <button class="cart-btn" onclick="openCart()">
-        Panier
+        🖤 Mon panier
         <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
@@ -689,60 +439,47 @@
 
   <!-- ══ HERO ══ -->
   <div class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="eyebrow"><div class="eyebrow-line"></div> Services additionnels</div>
-        <h1>Une expérience<br><em>singulière,</em><br>jusque dans<br>les détails</h1>
-        <p class="hero-desc">
-          Composez votre séjour à votre image. Chaque extra est soigneusement préparé pour vous accueillir dans les meilleures conditions.
-        </p>
-        <div class="property-chip">
-          Votre séjour à <strong id="propertyName">L'Officine</strong>
-        </div>
-      </div>
-      <div class="hero-deco">
-        <div class="deco-word">✦</div>
-        <div class="deco-tag">Balnéo &amp; Pièce secrète</div>
+    <div class="hero-panel">
+      <div class="hero-content">
+        <div class="hero-badge">🔥 Expérience Love Room</div>
+        <h1>Ajoutez une touche de <span class="accent">désir</span> à votre séjour</h1>
+        <p>Choisissez vos extras en quelques secondes. Paiement unique et sécurisé via Stripe — discret, simple, immédiat.</p>
+        <div class="property-tag">📍 Pour votre séjour à <strong id="propertyName">L'Officine</strong></div>
       </div>
     </div>
   </div>
 
-  <div class="gold-rule"><div class="gold-diamond"></div></div>
+  <div class="divider" aria-hidden="true"><div class="line"></div></div>
 
   <!-- ══ MAIN ══ -->
   <main>
-    <div class="section-head">
-      <div class="section-title">Vos extras disponibles</div>
-      <div class="section-sub">Paiement sécurisé &middot; Discret &middot; Sans tracas</div>
-    </div>
+    <p class="section-title">Vos extras disponibles</p>
+    <p class="section-sub">Sélectionnez ce qui vous fait envie · Paiement sécurisé · Livraison sans tracas</p>
     <div class="services-grid" id="servicesGrid"></div>
   </main>
 
   <!-- ══ FOOTER ══ -->
   <footer>
-    <div class="footer-name">L'Officine</div>
-    <div class="footer-copy">Paiement sécurisé via Stripe &middot; Aucun compte requis &middot; &copy; 2026</div>
+    Paiement 100% sécurisé via Stripe · Aucun compte requis · © 2026 L'Officine - Balnéo &amp; pièce secrète
   </footer>
 
   <!-- ══ DRAWER ══ -->
   <div class="overlay" id="overlay" onclick="closeCart()"></div>
   <div class="drawer" id="drawer">
     <div class="drawer-header">
-      <div class="drawer-title">Votre sélection</div>
+      <div class="drawer-title">🖤 Votre panier</div>
       <button class="close-btn" onclick="closeCart()">✕</button>
     </div>
     <div class="drawer-items" id="drawerItems">
-      <div class="empty-cart"><span class="big">◇</span><p>Votre panier est vide</p></div>
+      <div class="empty-cart"><span class="big">🛒</span>Votre panier est vide</div>
     </div>
     <div class="drawer-footer">
       <div class="total-row">
         <div class="total-label">Total à régler</div>
         <div class="total-amount" id="totalAmount">0,00 €</div>
       </div>
-      <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">
-        Procéder au paiement
-      </button>
-      <div class="secure-note">Paiement chiffré &middot; Powered by Stripe</div>
+      <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">💳 Payer maintenant</button>
+      <div class="secure-note">🔒 Paiement chiffré · Powered by Stripe</div>
     </div>
   </div>
 
@@ -764,7 +501,7 @@
       {
         id: 'late_checkout', emoji: '🕛',
         name: 'Départ tardif',
-        desc: 'Quittez le logement jusqu\'à 12h00 sans stress. Profitez d\'une dernière grasse matinée.',
+        desc: 'Quittez le logement jusqu\'à 12h00 sans stress. Profitez d\'une dernière grasse mat\'.',
         price: 20, per: '/ séjour', stripePriceId: 'price_1T3YgpEQXQOSFAvYcTkdgweM',
         options: [{ label: 'Heure de départ', type: 'select', name: 'heure', choices: ['12h00'] }]
       },
@@ -778,36 +515,36 @@
       {
         id: 'menage', emoji: '✨',
         name: 'Ménage intermédiaire',
-        desc: 'Un passage en milieu de séjour : linge de maison frais et appartement impeccable.',
+        desc: 'Un coup de propre au milieu du séjour : linge de maison frais et appartement nickel.',
         price: 1, per: '/ passage', stripePriceId: 'price_1T3fStEQXQOSFAvYeWHDGcAb',
         options: []
       },
       {
         id: 'prosecco', emoji: '🥂',
         name: 'Prosecco',
-        desc: 'Une bouteille de prosecco vous attend à votre arrivée, soigneusement rafraîchie.',
+        desc: 'Une bouteille de prosecco vous attend à votre arrivée, au frais.',
         price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fUZEQXQOSFAvYikUy5aJg',
         options: []
       },
       {
         id: 'champagne', emoji: '🍾',
-        name: 'Champagne millésimé',
-        desc: 'Une bouteille de champagne d\'exception vous attend à votre arrivée, au frais.',
+        name: 'Bouteille de champagne',
+        desc: 'Une bouteille de champagne millésimé vous attend à votre arrivée, au frais.',
         price: 50, per: '/ bouteille', stripePriceId: 'price_1T2sIbEQXQOSFAvYQOq3vbmQ',
         options: []
       },
       {
         id: 'vin_blanc', emoji: '🍷',
-        name: 'Vin blanc',
-        desc: 'Une bouteille de vin blanc sélectionnée avec soin, vous attend au frais.',
+        name: 'Bouteille de vin blanc',
+        desc: 'Une bouteille de vin blanc vous attend à votre arrivée, au frais.',
         price: 25, per: '/ bouteille', stripePriceId: 'price_1T3fYGEQXQOSFAvYeL53Lo1X',
         options: []
       },
       {
         id: 'breakfast', emoji: '🥐',
         name: 'Panier petit-déjeuner',
-        desc: 'Croissants, jus de fruits, café, confitures artisanales et viennoiseries locales.',
-        price: 35, per: '/ pour deux', stripePriceId: 'price_1T3fVFEQXQOSFAvYLxxXjVUX',
+        desc: 'Croissants, jus de fruits, café, confiture artisanale et viennoiseries locales.',
+        price: 35, per: '/ pour deux pers.', stripePriceId: 'price_1T3fVFEQXQOSFAvYLxxXjVUX',
         options: []
       },
       {
@@ -818,9 +555,9 @@
         options: []
       },
       {
-        id: 'pack_arrivee_depart', emoji: '◈',
-        name: 'Pack arrivée & départ',
-        desc: 'Arrivée anticipée et départ tardif réunis en un seul avantage. Le combo idéal.',
+        id: 'pack_arrivee_depart', emoji: '🕝',
+        name: 'Pack : arrivée tardive & départ tardif',
+        desc: 'Arrivée anticipée et départ tardif réunis en un seul avantage.',
         price: 35, per: '/ séjour', stripePriceId: 'price_1T3fwiEQXQOSFAvYVAKQ3ybw',
         options: []
       },
@@ -831,18 +568,18 @@
     function renderServices() {
       document.getElementById('servicesGrid').innerHTML = SERVICES.map(s => `
         <div class="card" id="card-${s.id}">
-          <div class="card-inner">
-            <div class="card-top">
-              <div class="card-icon">${s.emoji}</div>
-              <div class="in-cart-badge">Ajouté ✓</div>
-            </div>
+          <div class="card-emoji">
+            ${s.emoji}
+            <div class="in-cart-badge">✓ Ajouté</div>
+          </div>
+          <div class="card-body">
             <div class="card-name">${s.name}</div>
             <div class="card-desc">${s.desc}</div>
             ${s.options.length ? `<div class="card-options">${s.options.map(o => renderOpt(s.id, o)).join('')}</div>` : ''}
-            <div class="card-footer">
-              <div class="card-price">${s.price}&thinsp;€<span class="per">${s.per}</span></div>
-              <button class="add-btn" id="btn-${s.id}" onclick="addToCart('${s.id}')">Ajouter</button>
-            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">${s.price}€ <span class="per">${s.per}</span></div>
+            <button class="add-btn" id="btn-${s.id}" onclick="addToCart('${s.id}')">Ajouter</button>
           </div>
         </div>`).join('');
     }
@@ -858,7 +595,7 @@
       s.options.forEach(o => { const el = document.getElementById(`opt-${id}-${o.name}`); if(el) opts[o.name] = el.value; });
       cart.push({ service: s, options: opts, unitPrice: s.price });
       updateCartUI();
-      showToast(`${s.name} — ajouté à votre sélection`);
+      showToast(`${s.emoji} ${s.name} ajouté !`);
       document.getElementById(`card-${id}`).classList.add('in-cart');
       const btn = document.getElementById(`btn-${id}`);
       btn.textContent = 'Ajouté ✓'; btn.classList.add('added');
@@ -877,8 +614,7 @@
 
     function updateCartUI() {
       const el = document.getElementById('cartCount');
-      el.textContent = cart.length;
-      el.classList.add('bump');
+      el.textContent = cart.length; el.classList.add('bump');
       setTimeout(() => el.classList.remove('bump'), 350);
       document.getElementById('totalAmount').textContent =
         cart.reduce((s,i)=>s+i.unitPrice,0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
@@ -887,16 +623,16 @@
 
     function renderCartItems() {
       const el = document.getElementById('drawerItems');
-      if (!cart.length) { el.innerHTML = '<div class="empty-cart"><span class="big">◇</span><p>Votre panier est vide</p></div>'; return; }
-      el.innerHTML = cart.map((item,i)=>`
+      if (!cart.length) { el.innerHTML = '<div class="empty-cart"><span class="big">🛒</span>Votre panier est vide</div>'; return; }
+      el.innerHTML = cart.map((item,i) => `
         <div class="cart-item">
           <div class="cart-item-emoji">${item.service.emoji}</div>
           <div class="cart-item-info">
             <div class="cart-item-name">${item.service.name}</div>
             <div class="cart-item-detail">${Object.values(item.options).join(' · ')||''}</div>
           </div>
-          <div class="cart-item-price">${item.unitPrice}&thinsp;€</div>
-          <button class="remove-btn" onclick="removeFromCart(${i})">✕</button>
+          <div class="cart-item-price">${item.unitPrice}€</div>
+          <button class="remove-btn" onclick="removeFromCart(${i})">🗑</button>
         </div>`).join('');
     }
 
@@ -920,7 +656,7 @@
     }
 
     async function checkout() {
-      if (!cart.length) { showToast('Ajoutez au moins un service'); return; }
+      if (!cart.length) { showToast('Ajoutez au moins un service 😊'); return; }
       const btn = document.getElementById('checkoutBtn');
       btn.disabled = true; btn.textContent = 'Chargement…';
       try {
@@ -938,21 +674,18 @@
         if (error) throw new Error(error);
         if (url) window.location.href = url;
       } catch(e) {
-        showToast('Erreur — veuillez réessayer');
-        btn.disabled = false; btn.textContent = 'Procéder au paiement';
+        showToast('Erreur de paiement — réessayez 🙏');
+        btn.disabled = false; btn.innerHTML = '💳 Payer maintenant';
       }
     }
 
     if (urlParams.get('success') === '1')
-      setTimeout(() => showToast('Merci — votre commande a bien été reçue.'), 500);
+      setTimeout(() => showToast('🎉 Merci ! Votre commande a bien été reçue.'), 500);
 
     renderServices();
   </script>
 </body>
 </html>
-
-
-
 
 
 
