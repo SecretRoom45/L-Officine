@@ -179,6 +179,82 @@
     }
     .property-tag strong { color: rgba(255,255,255,0.96); font-weight: 900; }
 
+    /* ── PREMIUM TRUST (STARS) ── */
+    .trust-wrap{
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .lux-rating{
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(0,0,0,0.30), rgba(255,255,255,0.03));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+    }
+    .lux-rating .stars{
+      font-size: 18px;
+      letter-spacing: 6px;
+      line-height: 1;
+      /* “hot” premium */
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(224,16,32,0.95));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 10px 30px rgba(200,17,31,0.18);
+      position: relative;
+    }
+    .lux-rating .stars::after{
+      content:"";
+      position:absolute;
+      inset:-6px -12px;
+      background: radial-gradient(220px 40px at 50% 50%, rgba(224,16,32,0.16), transparent 60%);
+      filter: blur(10px);
+      opacity: 0.9;
+      pointer-events:none;
+    }
+    .lux-rating .label{
+      font-family: "Playfair Display", serif;
+      font-size: 0.98rem;
+      color: rgba(255,255,255,0.90);
+      letter-spacing: 0.01em;
+    }
+    .lux-rating .sub{
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.62);
+      font-weight: 600;
+    }
+    .trust-row{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .trust-pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.74);
+      font-size: 0.85rem;
+      backdrop-filter: blur(10px);
+    }
+    .trust-pill strong{
+      color: rgba(255,255,255,0.92);
+      font-weight: 900;
+    }
+
     /* ── DIVIDER ── */
     .divider { max-width: var(--max); margin: 18px auto 0; padding: 0 18px; z-index: 1; position: relative; }
     .divider .line {
@@ -452,6 +528,10 @@
       .logo .big { font-size: 1rem; }
       .cart-btn { padding: 10px 12px; font-size: 0.86rem; }
       .services-grid { grid-template-columns: 1fr; }
+
+      .lux-rating{ padding: 11px 12px; }
+      .lux-rating .stars{ letter-spacing: 5px; font-size: 17px; }
+      .trust-pill{ font-size: 0.82rem; }
     }
   </style>
 </head>
@@ -502,6 +582,22 @@
           Champagne au frais, petit-déjeuner, départ sans hâte…
           Personnalisez votre expérience comme vous l'imaginiez et laissez-nous faire le reste.
         </p>
+
+        <!-- ★★★★☆ PREMIUM STARS (TRUST) -->
+        <div class="trust-wrap">
+          <div class="lux-rating" aria-label="Avis voyageurs">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <div class="label">Expérience exceptionnelle</div>
+            <div class="sub">Discrétion absolue · Service premium</div>
+          </div>
+
+          <div class="trust-row" aria-label="Garanties">
+            <div class="trust-pill">🔒 <strong>Paiement</strong> sécurisé</div>
+            <div class="trust-pill">🕶️ <strong>Discret</strong> &amp; sans compte</div>
+            <div class="trust-pill">⚡ <strong>Préparé</strong> avant votre arrivée</div>
+          </div>
+        </div>
+
         <div class="property-tag">📍 Préparez votre séjour à <strong id="propertyName">L'Officine</strong></div>
       </div>
     </div>
@@ -741,5 +837,3 @@
   </script>
 </body>
 </html>
-
-
