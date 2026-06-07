@@ -1,5 +1,10 @@
+Voici le code fusionné complet : email interne ELOK + email client + email Sabrina.
+
+```js
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const nodemailer = require('nodemailer');
+
+const SABRINA_EMAIL = 'sabrina.trehout2@hotmail.fr';
 
 exports.handler = async (event) => {
   const sig = event.headers['stripe-signature'];
@@ -94,7 +99,16 @@ async function sendEmails({ nomLogement, dateArrivee, customerEmail, montant, de
       </tr>
     `;
 
-  // Email interne ELOK
+  const itemsListHtml = items.length
+    ? items.map(item => {
+        const options = item.options && Object.keys(item.options).length
+          ? ` (${Object.values(item.options).join(' · ')})`
+          : '';
+
+        return `<li><strong>${item.name}</strong>${options}</li>`;
+      }).join('')
+    : `<li>Option réservée via L'Officine</li>`;
+
   await transporter.sendMail({
     from: `"ELOK eSHOP" <${process.env.SMTP_USER}>`,
     to: 'info@elok.fr',
@@ -116,10 +130,9 @@ async function sendEmails({ nomLogement, dateArrivee, customerEmail, montant, de
     `,
   });
 
-  // Email client
   if (customerEmail) {
     await transporter.sendMail({
-      from: `"L'Officine by ELOK" <${process.env.SMTP_USER}>`,
+      from: `"L'Officine" <${process.env.SMTP_USER}>`,
       to: customerEmail,
       subject: `Confirmation de votre commande - L'Officine`,
       html: `
@@ -171,4 +184,46 @@ async function sendEmails({ nomLogement, dateArrivee, customerEmail, montant, de
       `,
     });
   }
+
+  await transporter.sendMail({
+    from: `"ELOK - L'Officine" <${process.env.SMTP_USER}>`,
+    to: SABRINA_EMAIL,
+    subject: `Option client payée - ${nomLogement}`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;">
+        <h2>Bonjour Sabrina,</h2>
+
+        <p>
+          Un client a payé une option pour son séjour à
+          <strong>${nomLogement}</strong>.
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
+          <tr>
+            <td><b>Date d'arrivée</b></td>
+            <td>${dateArrivee}</td>
+          </tr>
+          <tr>
+            <td><b>Extra à préparer</b></td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                ${itemsListHtml}
+              </ul>
+            </td>
+          </tr>
+        </table>
+
+        <p style="margin-top:20px;">
+          Merci de prévoir cette prestation avant l'arrivée du client.
+        </p>
+
+        <p>
+          Bonne journée,<br>
+          <strong>Sébastien</strong>
+        </p>
+      </div>
+    `,
+  });
 }
+```
+
