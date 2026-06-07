@@ -824,7 +824,7 @@
           body: JSON.stringify({
             line_items: cart.map(i => ({ price: i.service.stripePriceId, quantity: 1 })),
             metadata: { property: CONFIG.propertyName, items: JSON.stringify(cart.map(i=>({name:i.service.name,options:i.options}))) },
-            success_url: window.location.href + '?success=1',
+            success_url: window.location.origin + '/confirmation.html',
             cancel_url: window.location.href,
           })
         });
