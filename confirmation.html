@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vlxih5ajxr");
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3WLL6HPWV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3WLL6HPWV9');
+  </script>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Commande confirmée · L'Officine</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body, html { overflow-x: hidden; max-width: 100%; }
+
+    :root {
+      --bg:    #07070A;
+      --bg-2:  #0D0D12;
+      --panel: rgba(255,255,255,0.06);
+      --stroke:  rgba(255,255,255,0.12);
+      --stroke-2:rgba(255,255,255,0.18);
+      --red:   #C8111F;
+      --red-2: #A00E19;
+      --red-3: #E01020;
+      --text:  rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --soft:  rgba(255,255,255,0.48);
+      --shadow:    0 10px 40px rgba(0,0,0,0.55);
+      --shadow-lg: 0 20px 70px rgba(0,0,0,0.72);
+      --radius:    18px;
+      --radius-sm: 12px;
+      --radius-lg: 26px;
+    }
+
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 24px;
+      background: rgba(7,7,10,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--stroke);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: "Playfair Display", serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--red-3); }
+
+    /* ── Card ── */
+    .card {
+      margin-top: 80px;
+      background: var(--panel);
+      border: 1px solid var(--stroke-2);
+      border-radius: var(--radius-lg);
+      padding: 52px 44px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Checkmark ── */
+    .check-wrap {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(200,17,31,0.18), rgba(200,17,31,0.06));
+      border: 2px solid rgba(200,17,31,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(200,17,31,0.25); }
+      50%       { box-shadow: 0 0 0 14px rgba(200,17,31,0); }
+    }
+
+    .check-icon {
+      width: 38px;
+      height: 38px;
+      stroke: var(--red-3);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .check-path {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: drawCheck 0.5s 0.3s ease forwards;
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ── Text ── */
+    .title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    /* ── Status steps ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+      text-align: left;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      animation: fadeUp 0.5s both;
+    }
+
+    .step:nth-child(1) { animation-delay: 0.35s; }
+    .step:nth-child(2) { animation-delay: 0.5s; }
+    .step:nth-child(3) { animation-delay: 0.65s; }
+
+    .step-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .step-body { flex: 1; }
+
+    .step-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--soft);
+      margin-bottom: 2px;
+    }
+
+    .step-text {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .step-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: rgba(200,17,31,0.18);
+      color: var(--red-3);
+      border: 1px solid rgba(200,17,31,0.3);
+      white-space: nowrap;
+    }
+
+    .step-badge.green {
+      background: rgba(34,197,94,0.14);
+      color: #4ade80;
+      border-color: rgba(34,197,94,0.3);
+    }
+
+    /* ── CTA ── */
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--red), var(--red-2));
+      color: #fff;
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      animation: fadeUp 0.5s 0.8s both;
+    }
+
+    .btn-home:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--stroke);
+      margin: 0 0 28px;
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 36px 22px; }
+      .title { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">L'<span>Officine</span></a>
+  </header>
+
+  <div class="card">
+
+    <div class="check-wrap">
+      <svg class="check-icon" viewBox="0 0 24 24">
+        <polyline class="check-path" points="4 13 9 18 20 7"/>
+      </svg>
+    </div>
+
+    <h1 class="title">Paiement validé ✓</h1>
+    <p class="subtitle">
+      Merci pour votre commande&nbsp;! Notre équipe prend en charge vos extras
+      et tout sera prêt pour votre arrivée.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-icon">💳</span>
+        <div class="step-body">
+          <div class="step-label">Paiement</div>
+          <div class="step-text">Transaction sécurisée confirmée</div>
+        </div>
+        <span class="step-badge green">Validé</span>
+      </div>
+
+      <div class="step">
+        <span class="step-icon">📋</span>
+        <div class="step-body">
+          <div class="step-label">Commande</div>
+          <div class="step-text">Votre commande est en cours de préparation</div>
+        </div>
+        <span class="step-badge">En cours</span>
+      </div>
+
+      <div class="step">
+        <span class="step-icon">🏡</span>
+        <div class="step-body">
+          <div class="step-label">Arrivée</div>
+          <div class="step-text">Tout sera prêt à votre check-in</div>
+        </div>
+        <span class="step-badge">À venir</span>
+      </div>
+    </div>
+
+    <a href="/" class="btn-home">
+      ← Retour à l'accueil
+    </a>
+
+  </div>
+
+</body>
+</html>

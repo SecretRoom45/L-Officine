@@ -1,6 +1,3 @@
-Voici le code fusionné complet : email interne ELOK + email client + email Sabrina.
-
-```js
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const nodemailer = require('nodemailer');
 
@@ -225,5 +222,3 @@ async function sendEmails({ nomLogement, dateArrivee, customerEmail, montant, de
     `,
   });
 }
-```
-
